@@ -1,0 +1,214 @@
+{
+	"info": {
+		"_postman_id": "78b7270c-527a-4b3e-a904-903155567525",
+		"name": "UniStage - Université de Labé API Collection",
+		"description": "Collection d'API REST pour l'application UniStage (Spring Boot 3.2.5 & Angular 18)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "1. Authentification",
+			"item": [
+				{
+					"name": "Connexion Admin (Alpha Oumar DIALLO)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"dialoalphoumar021@gmail.com\",\n  \"motDePasse\": \"Aoddiallo\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/auth/login",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "auth", "login"]
+						}
+					}
+				},
+				{
+					"name": "Connexion Étudiant (Mamadou Saliou BARRY)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"Saliou@gmail.com\",\n  \"motDePasse\": \"Saliou123\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/auth/login",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "auth", "login"]
+						}
+					}
+				},
+				{
+					"name": "Connexion Étudiante (Mariama Siiré DIALLO)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"Sire@gmail.com\",\n  \"motDePasse\": \"Sire@gmail.com\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/auth/login",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "auth", "login"]
+						}
+					}
+				},
+				{
+					"name": "Connexion Entreprise (Kouma Academy)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"contact@koumaacademy.com\",\n  \"motDePasse\": \"Kouma2026!\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/auth/login",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "auth", "login"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "2. Offres de Stage",
+			"item": [
+				{
+					"name": "Liste publique des offres",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/offres/publiques",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "offres", "publiques"]
+						}
+					}
+				},
+				{
+					"name": "Création d'une offre (Entreprise)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" },
+							{ "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"titre\": \"Développeur Angular / Spring Boot\",\n  \"description\": \"Stage de fin d'études L3 Informatique\",\n  \"competencesRequises\": \"Java, Angular, MySQL\",\n  \"dateDebut\": \"2026-09-01\",\n  \"dateFin\": \"2026-12-01\",\n  \"lieu\": \"Labé / Conakry\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/offres",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "offres"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "3. Candidatures",
+			"item": [
+				{
+					"name": "Postuler à une offre (Étudiant)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" },
+							{ "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"offreId\": 1,\n  \"lettreMotivation\": \"Madame, Monsieur, Je souhaite postuler pour ce stage de fin d'études L3 Informatique à l'Université de Labé.\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/candidatures",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "candidatures"]
+						}
+					}
+				},
+				{
+					"name": "Mes Candidatures (Étudiant)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{ "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+						],
+						"url": {
+							"raw": "http://localhost:8080/api/candidatures/etudiant",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "candidatures", "etudiant"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "4. Administration",
+			"item": [
+				{
+					"name": "Statistiques Globales (Admin)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{ "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+						],
+						"url": {
+							"raw": "http://localhost:8080/api/admin/stats",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "admin", "stats"]
+						}
+					}
+				},
+				{
+					"name": "Liste des Utilisateurs (Admin)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{ "key": "Authorization", "value": "Bearer {{jwt_token}}" }
+						],
+						"url": {
+							"raw": "http://localhost:8080/api/admin/utilisateurs",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "admin", "utilisateurs"]
+						}
+					}
+				}
+			]
+		}
+	]
+}

@@ -1,4 +1,5 @@
 # 🎓 UniStage — Plateforme de Gestion et de Suivi des Stages
+
 > **Université de Labé (République de Guinée)**  
 > *Faculté des Sciences et Techniques (FST) — Département d'Informatique*  
 > *Plateforme Web Full-Stack Enterprise (Angular 18 & Spring Boot 3.2 / Java 21 LTS / MySQL 8)*
@@ -276,5 +277,3 @@ La base de données est automatiquement alimentée au premier démarrage via `Da
 ---
 
 &copy; 2026 **Université de Labé** — Tous droits réservés.
-#   U n i S t a g e  
- 

@@ -24,7 +24,7 @@ public class Etudiant {
 
     private String telephone;
 
-    @Column(columnDefinition = "LONGTEXT")
+    @Column(columnDefinition = "TEXT")
     private String cv;
 
     @OneToOne(cascade = CascadeType.ALL)

@@ -1,13 +1,14 @@
 # Node / Angular dependencies and build output
-frontend/node_modules/
+node_modules/
 frontend/dist/
 frontend/.angular/
-node_modules/
+.vercel/
 
 # Java / Spring Boot build output
-backend/target/
 target/
 *.class
+*.jar
+!.mvn/wrapper/maven-wrapper.jar
 
 # IDE & Editor files
 .vscode/
@@ -16,8 +17,20 @@ target/
 .classpath
 .project
 .settings/
+.factorypath
 
 # Operating System files
 Thumbs.db
 .DS_Store
 *.log
+
+# Environment & Secrets (seul le modèle .env.example est versionné)
+.env
+.env.*
+*.env
+!.env.example
+application-local.properties
+**/application-local.properties
+*.pem
+*.key
+*.p12

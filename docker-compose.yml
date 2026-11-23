@@ -1,0 +1,58 @@
+# Environnement local complet : PostgreSQL + backend + frontend.
+# Prérequis : copier .env.example en .env et renseigner les valeurs.
+#   docker compose up --build -d
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: unistage-postgres
+    restart: always
+    environment:
+      POSTGRES_DB: unistage
+      POSTGRES_USER: ${SPRING_DATASOURCE_USERNAME:?Definir SPRING_DATASOURCE_USERNAME dans .env}
+      POSTGRES_PASSWORD: ${SPRING_DATASOURCE_PASSWORD:?Definir SPRING_DATASOURCE_PASSWORD dans .env}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d unistage"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: unistage-backend
+    restart: always
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/unistage
+      SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
+      SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET:?Definir JWT_SECRET dans .env (32 caracteres minimum)}
+      JWT_EXPIRATION_MS: ${JWT_EXPIRATION_MS:-86400000}
+      CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS:-http://localhost:4200,http://localhost}
+      ADMIN_EMAIL: ${ADMIN_EMAIL:-}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-}
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-dev}
+      PORT: 8080
+    ports:
+      - "8080:8080"
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: unistage-frontend
+    restart: always
+    depends_on:
+      - backend
+    ports:
+      - "4200:80"
+
+volumes:
+  postgres_data:

@@ -2,6 +2,7 @@ package gn.univ_labe.unistage.security;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
@@ -16,8 +17,27 @@ public class JwtUtils {
     @Value("${jwt.secret}")
     private String jwtSecret;
 
-    @Value("${jwt.expirationMs}")
+    @Value("${jwt.expirationMs:86400000}")
     private int jwtExpirationMs;
+
+    @PostConstruct
+    public void validateSecretKey() {
+        if (jwtSecret == null || jwtSecret.getBytes(StandardCharsets.UTF_8).length < 32) {
+            int length = (jwtSecret == null) ? 0 : jwtSecret.getBytes(StandardCharsets.UTF_8).length;
+            throw new IllegalStateException(
+                    "Configuration JWT invalide: la propriété 'jwt.secret' est requise et doit comporter au moins 32 octets (256 bits). Taille actuelle: " + length + " octets."
+            );
+        }
+    }
+
+    // Méthodes pour configuration manuelle (ex: tests unitaires)
+    public void setJwtSecret(String jwtSecret) {
+        this.jwtSecret = jwtSecret;
+    }
+
+    public void setJwtExpirationMs(int jwtExpirationMs) {
+        this.jwtExpirationMs = jwtExpirationMs;
+    }
 
     private SecretKey getSigningKey() {
         byte[] keyBytes = jwtSecret.getBytes(StandardCharsets.UTF_8);

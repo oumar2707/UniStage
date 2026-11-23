@@ -3,7 +3,9 @@ package gn.univ_labe.unistage.config;
 import gn.univ_labe.unistage.model.*;
 import gn.univ_labe.unistage.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,6 +14,7 @@ import java.time.LocalDate;
 import java.util.Optional;
 
 @Component
+@Profile({"dev", "demo"})
 public class DataInitializer implements CommandLineRunner {
 
     @Autowired
@@ -32,177 +35,113 @@ public class DataInitializer implements CommandLineRunner {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Value("${app.demo.admin-password:AdminDev123!}")
+    private String adminPassword;
+
+    @Value("${app.demo.etudiant-password:EtudiantDev123!}")
+    private String etudiantPassword;
+
+    @Value("${app.demo.entreprise-password:EntrepriseDev123!}")
+    private String entreprisePassword;
+
     @Override
     @Transactional
     public void run(String... args) throws Exception {
-        System.out.println(">>> [UniStage] Initialisation et synchronisation complète de la base MySQL...");
+        System.out.println(">>> [UniStage] Initialisation des données de démo (Profil DEV)...");
 
-        // 1. COMPTE ADMIN (dialoalphoumar021@gmail.com / Aoddiallo)
-        Optional<Utilisateur> existingAdmin = utilisateurRepository.findByEmail("dialoalphoumar021@gmail.com");
-        Utilisateur adminUser;
+        // 1. COMPTE ADMIN DE DÉMO
+        String adminEmail = "admin@demo.local";
+        Optional<Utilisateur> existingAdmin = utilisateurRepository.findByEmail(adminEmail);
         if (existingAdmin.isEmpty()) {
-            adminUser = new Utilisateur("DIALLO", "Alpha Oumar", "dialoalphoumar021@gmail.com", passwordEncoder.encode("Aoddiallo"), RoleEnum.ADMIN);
-            adminUser = utilisateurRepository.save(adminUser);
-            System.out.println("   [+] Compte Admin créé : dialoalphoumar021@gmail.com");
-        } else {
-            adminUser = existingAdmin.get();
-            adminUser.setMotDePasse(passwordEncoder.encode("Aoddiallo"));
-            adminUser.setNom("DIALLO");
-            adminUser.setPrenom("Alpha Oumar");
+            Utilisateur adminUser = new Utilisateur("Admin", "Démo", adminEmail, passwordEncoder.encode(adminPassword), RoleEnum.ADMIN);
             utilisateurRepository.save(adminUser);
-            System.out.println("   [✓] Compte Admin mis à jour : dialoalphoumar021@gmail.com");
+            System.out.println("   [+] Compte Admin démo créé : " + adminEmail);
         }
 
-        // Nettoyage de l'ancien admin générique
-        utilisateurRepository.findByEmail("admin@univ-labe.edu.gn").ifPresent(u -> utilisateurRepository.delete(u));
-
-        // 2. ÉTUDIANT 1 : Mamadou Saliou BARRY (Saliou@gmail.com / Saliou123)
-        Etudiant etudiantSaliou = syncEtudiant(
-                "Saliou@gmail.com",
-                "Saliou123",
-                "BARRY",
-                "Mamadou Saliou",
+        // 2. ÉTUDIANTS DE DÉMO
+        Etudiant etudiant1 = syncEtudiant(
+                "etudiant1@demo.local",
+                etudiantPassword,
+                "Diallo",
+                "Alpha",
                 "ETU-2026-001",
                 "Licence 3 Informatique",
                 "L3",
-                "+224620112233",
-                "cv_mamadou_saliou_barry.pdf"
+                "+224620000001",
+                "cv_etudiant1_demo.pdf"
         );
 
-        // 3. ÉTUDIANT 2 : Mariama Siiré DIALLO (Sire@gmail.com / Sire@gmail.com)
-        Etudiant etudiantSire = syncEtudiant(
-                "Sire@gmail.com",
-                "Sire@gmail.com",
-                "DIALLO",
-                "Mariama Siiré",
+        Etudiant etudiant2 = syncEtudiant(
+                "etudiant2@demo.local",
+                etudiantPassword,
+                "Barry",
+                "Mariama",
                 "ETU-2026-002",
                 "Licence 3 Informatique",
                 "L3",
-                "+224622445566",
-                "cv_mariama_sire_diallo.pdf"
+                "+224620000002",
+                "cv_etudiant2_demo.pdf"
         );
 
-        // 4. SYNCHRONISATION DES 5 ENTREPRISES RÉELLES
-        Entreprise entrepriseKouma = syncEntreprise(
-                "contact@koumaacademy.com",
-                "Kouma2026!",
-                "KOUMA",
+        // 3. ENTREPRISES DE DÉMO
+        Entreprise entreprise1 = syncEntreprise(
+                "entreprise1@demo.local",
+                entreprisePassword,
+                "Directeur Technique",
                 "Responsable Recrutement",
-                "Kouma Academy",
-                "Formation Tech & Intelligence Artificielle",
-                "Nongo / Kipé, Conakry",
-                "https://koumaacademy.com"
+                "TechGuinée SARL",
+                "Informatique & Télécommunications",
+                "Centre-ville, Labé",
+                "https://entreprise1.demo.local"
         );
 
-        Entreprise entrepriseNesten = syncEntreprise(
-                "contact@nestengroup.com",
-                "Nesten2026!",
-                "NESTEN",
-                "Direction RH",
-                "Nesten Group",
-                "Ingénierie & Systèmes d'Information",
-                "Centre-ville, Conakry / Labé",
-                "https://nestengroup.com"
-        );
-
-        Entreprise entrepriseAnsuten = syncEntreprise(
-                "contact@ansuten.gov.gn",
-                "Ansuten2026!",
-                "ANSUTEN",
-                "Service Stages & Innovation",
-                "ANSUTEN Guinée",
-                "Télécommunications & Inclusion Numérique",
-                "Kaloum, Conakry",
-                "https://ansuten.gov.gn"
-        );
-
-        Entreprise entrepriseOrange = syncEntreprise(
-                "contact@orange-guinee.gn",
-                "Entreprise123!",
-                "ORANGE",
-                "Directeur Régional",
-                "Orange Guinée Labé",
-                "Télécommunications & Informatique",
-                "Quartier Tata, Labé",
-                "https://orange-guinee.gn"
-        );
-
-        Entreprise entrepriseSylla = syncEntreprise(
-                "contact@syllatech.gn",
-                "Sylla123!",
-                "SYLLA",
-                "Fondateur Tech",
-                "Sylla Tech Labs",
+        Entreprise entreprise2 = syncEntreprise(
+                "entreprise2@demo.local",
+                entreprisePassword,
+                "Fondateur",
+                "RH",
+                "Labé Solutions Tech",
                 "Développement Web & IA",
-                "Labé / Conakry",
-                "https://syllatech.gn"
+                "Quartier Tata, Labé",
+                "https://entreprise2.demo.local"
         );
 
-        // 5. SYNCHRONISATION DES OFFRES DE STAGE POUR CHAQUE ENTREPRISE
+        // 4. OFFRES DE STAGE DE DÉMO
         syncOffre(
-                "Stagiaire Développeur Python & Intelligence Artificielle",
-                "Kouma Academy recherche des étudiants motivés de l'Université de Labé pour participer à nos projets d'IA, de vision par ordinateur et de développement web.",
-                "Python, FastAPI, TensorFlow, Git, Angular",
+                "Stagiaire Développeur Full-Stack Java / Spring Boot & Angular",
+                "TechGuinée SARL recherche un stagiaire motivé de l'Université de Labé pour participer au développement et à l'évolution de nos plateformes web.",
+                "Java 17, Spring Boot, Angular, PostgreSQL, Git",
                 LocalDate.now().plusDays(10),
                 LocalDate.now().plusMonths(6),
-                "Nongo, Conakry (Hybride)",
-                entrepriseKouma
+                "Labé (Hybride)",
+                entreprise1
         );
 
         syncOffre(
-                "Développeur Full-Stack Java / Spring Boot & Angular",
-                "Nesten Group recrute des stagiaires pour le développement et la maintenance de solutions d'entreprise sous Spring Boot 3 et Angular 18.",
-                "Java 21, Spring Boot, Angular 18, MySQL, REST API",
+                "Stagiaire Développeur Front-End Web",
+                "Labé Solutions Tech propose un stage pratique pour concevoir des interfaces réactives et modernes en Angular.",
+                "Angular, TypeScript, HTML5/CSS3, REST API",
                 LocalDate.now().plusDays(15),
-                LocalDate.now().plusMonths(5),
-                "Conakry / Labé",
-                entrepriseNesten
-        );
-
-        syncOffre(
-                "Assistant Administrateur Réseaux & Telecommunication",
-                "Stage pratique au sein de l'ANSUTEN pour accompagner le déploiement des infrastructures réseaux universitaires et des centres d'inclusion numérique.",
-                "Cisco, TCP/IP, Linux Debian, Sécurité Informatique",
-                LocalDate.now().plusDays(20),
-                LocalDate.now().plusMonths(6),
-                "Kaloum, Conakry",
-                entrepriseAnsuten
-        );
-
-        syncOffre(
-                "Administrateur Réseaux & Sécurité Télécoms",
-                "Stage de 3 mois au sein de l'équipe infrastructure réseaux et sécurité télécoms à la direction régionale d'Orange Guinée à Labé.",
-                "Cisco, TCP/IP, Linux Debian/Ubuntu, Sécurité Réseau",
-                LocalDate.now().plusDays(12),
-                LocalDate.now().plusMonths(3),
-                "Quartier Tata, Labé",
-                entrepriseOrange
-        );
-
-        syncOffre(
-                "Développeur Front-End Web & Mobile",
-                "Conception d'interfaces utilisateurs modernes et réactives en Angular et TypeScript pour nos applications clients chez Sylla Tech Labs.",
-                "Angular 18, TypeScript, HTML5/CSS3, Flexbox/Grid, REST",
-                LocalDate.now().plusDays(5),
                 LocalDate.now().plusMonths(4),
-                "Labé (Centre)",
-                entrepriseSylla
+                "Labé (Présentiel)",
+                entreprise2
         );
 
-        // 6. CANDIDATURES INITIALES
+        // 5. CANDIDATURE DE DÉMO
         if (candidatureRepository.count() == 0) {
-            offreRepository.findAll().stream().findFirst().ifPresent(o -> {
-                Candidature cand1 = new Candidature(
-                        "Madame, Monsieur,\nÉtudiant en Licence 3 Informatique à l'Université de Labé, je pose ma candidature avec enthousiasme pour l'offre de stage.",
+            offreRepository.findAll().stream().findFirst().ifPresent(offre -> {
+                Candidature candidature = new Candidature(
+                        "Madame, Monsieur,\nActuellement étudiant en Licence 3 Informatique à l'Université de Labé, je vous soumets ma candidature pour ce stage.",
+                        "cv_etudiant1_demo.pdf",
                         StatutCandidature.EN_ATTENTE,
-                        etudiantSaliou,
-                        o
+                        etudiant1,
+                        offre
                 );
-                candidatureRepository.save(cand1);
+                candidatureRepository.save(candidature);
             });
         }
 
-        System.out.println(">>> [UniStage] Toutes les entreprises et leurs offres ont été synchronisées avec succès !");
+        System.out.println(">>> [UniStage] Données de démonstration initialisées avec succès !");
     }
 
     private Etudiant syncEtudiant(String email, String pass, String nom, String prenom, String matricule, String filiere, String niveau, String tel, String cv) {
@@ -213,10 +152,6 @@ public class DataInitializer implements CommandLineRunner {
             user = utilisateurRepository.save(user);
         } else {
             user = optUser.get();
-            user.setMotDePasse(passwordEncoder.encode(pass));
-            user.setNom(nom);
-            user.setPrenom(prenom);
-            user = utilisateurRepository.save(user);
         }
 
         Optional<Etudiant> optEtudiant = etudiantRepository.findByUtilisateurId(user.getId());
@@ -228,14 +163,7 @@ public class DataInitializer implements CommandLineRunner {
             Etudiant etudiant = new Etudiant(matricule, filiere, niveau, tel, cv, user);
             return etudiantRepository.save(etudiant);
         } else {
-            Etudiant etudiant = optEtudiant.get();
-            etudiant.setMatricule(matricule);
-            etudiant.setFiliere(filiere);
-            etudiant.setNiveau(niveau);
-            etudiant.setTelephone(tel);
-            etudiant.setCv(cv);
-            etudiant.setUtilisateur(user);
-            return etudiantRepository.save(etudiant);
+            return optEtudiant.get();
         }
     }
 
@@ -247,8 +175,6 @@ public class DataInitializer implements CommandLineRunner {
             user = utilisateurRepository.save(user);
         } else {
             user = existingUser.get();
-            user.setMotDePasse(passwordEncoder.encode(pass));
-            utilisateurRepository.save(user);
         }
 
         final Utilisateur finalUser = user;
@@ -257,24 +183,18 @@ public class DataInitializer implements CommandLineRunner {
             Entreprise ent = new Entreprise(raisonSociale, secteur, adresse, siteWeb, StatutValidation.VALIDE, finalUser);
             return entrepriseRepository.save(ent);
         } else {
-            Entreprise ent = existingEnt.get();
-            ent.setRaisonSociale(raisonSociale);
-            ent.setSecteurActivite(secteur);
-            ent.setAdresse(adresse);
-            ent.setSiteWeb(siteWeb);
-            ent.setStatutValidation(StatutValidation.VALIDE);
-            return entrepriseRepository.save(ent);
+            return existingEnt.get();
         }
     }
 
     private void syncOffre(String titre, String desc, String comp, LocalDate debut, LocalDate fin, String lieu, Entreprise entreprise) {
         boolean exists = offreRepository.findAll().stream()
                 .anyMatch(o -> o.getTitre().equalsIgnoreCase(titre) && o.getEntreprise().getId().equals(entreprise.getId()));
-        
+
         if (!exists) {
             OffreStage offre = new OffreStage(titre, desc, comp, debut, fin, lieu, StatutOffre.OUVERTE, entreprise);
             offreRepository.save(offre);
-            System.out.println("   [+] Offre de stage créée : " + titre + " (" + entreprise.getRaisonSociale() + ")");
+            System.out.println("   [+] Offre de démo créée : " + titre);
         }
     }
 }

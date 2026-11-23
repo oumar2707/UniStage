@@ -19,7 +19,7 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
         // Erreurs HTTP
         switch (error.status) {
           case 0:
-            errorMessage = 'Impossible de contacter le serveur backend UniStage (http://localhost:8080). Assurez-vous que le serveur Spring Boot est bien démarré.';
+            errorMessage = 'Impossible de contacter le serveur backend UniStage. Assurez-vous que le serveur Spring Boot est bien démarré.';
             break;
 
           case 401:

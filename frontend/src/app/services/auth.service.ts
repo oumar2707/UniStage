@@ -2,12 +2,13 @@ import { Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
 import { LoginResponse, RegisterEtudiantRequest, RegisterEntrepriseRequest, User, RoleEnum } from '../models/user.model';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:8080/api/auth';
+  private apiUrl = `${environment.apiUrl}/auth`;
   private TOKEN_KEY = 'unistage_jwt_token';
   private USER_KEY = 'unistage_user_info';
 

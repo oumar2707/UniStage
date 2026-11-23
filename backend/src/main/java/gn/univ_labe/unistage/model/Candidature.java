@@ -17,7 +17,7 @@ public class Candidature {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String lettreMotivation;
 
-    @Column(columnDefinition = "LONGTEXT")
+    @Column(columnDefinition = "TEXT")
     private String cv;
 
     @Enumerated(EnumType.STRING)

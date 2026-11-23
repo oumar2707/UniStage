@@ -1,5 +1,8 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
+import { PageBannerComponent } from '../../components/page-banner/page-banner.component';
+import { RevealDirective } from '../../directives/reveal.directive';
 import { CandidatureService } from '../../services/candidature.service';
 import { AuthService } from '../../services/auth.service';
 import { Candidature } from '../../models/candidature.model';
@@ -9,16 +12,17 @@ import { CandidatureDetailModalComponent } from '../../components/candidature-de
 @Component({
   selector: 'app-etudiant-dashboard',
   standalone: true,
-  imports: [CommonModule, StatusBadgeComponent, CandidatureDetailModalComponent],
+  imports: [CommonModule, RouterLink, StatusBadgeComponent, CandidatureDetailModalComponent, PageBannerComponent, RevealDirective],
   template: `
     <div class="dashboard-page container">
-      <div class="page-header">
-        <div>
-          <span class="page-tag"><i class="fa-solid fa-graduation-cap"></i> Université de Labé</span>
-          <h1>Mes candidatures</h1>
-          <p class="sub-text">Suivi du traitement de vos candidatures déposées</p>
-        </div>
-      </div>
+      <app-page-banner
+        image="/images/etudiants.jpg"
+        eyebrow="Espace étudiant"
+        [title]="'Bonjour ' + prenom"
+        subtitle="Retrouvez ici vos candidatures et la réponse de chaque entreprise.">
+        <a routerLink="/" class="btn btn-light"><i class="fa-solid fa-magnifying-glass"></i> Voir les offres</a>
+      </app-page-banner>
+      <h2 class="list-title">Mes candidatures</h2>
 
       @if (loading) {
         <div class="loading-spinner">
@@ -27,8 +31,8 @@ import { CandidatureDetailModalComponent } from '../../components/candidature-de
       } @else {
         @if (candidatures.length > 0) {
           <div class="candidatures-list">
-            @for (item of candidatures; track item.id) {
-              <div class="candidature-card card">
+            @for (item of candidatures; track item.id; let i = $index) {
+              <div class="candidature-card card lift" appReveal [revealDelay]="i * 80">
                 <div class="candidature-header flex-between">
                   <div>
                     <span class="entreprise-name"><i class="fa-solid fa-building"></i> {{ item.raisonSocialeEntreprise }}</span>
@@ -153,6 +157,8 @@ import { CandidatureDetailModalComponent } from '../../components/candidature-de
 })
 export class EtudiantDashboardComponent implements OnInit {
   private candidatureService = inject(CandidatureService);
+  private authService = inject(AuthService);
+  prenom = this.authService.currentUser()?.prenom ?? '';
 
   candidatures: Candidature[] = [];
   selectedCandidatureForView: Candidature | null = null;

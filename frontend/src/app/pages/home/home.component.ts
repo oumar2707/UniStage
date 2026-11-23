@@ -1,7 +1,9 @@
 import { Component, OnInit, OnDestroy, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+import { RevealDirective } from '../../directives/reveal.directive';
+import { CountUpDirective } from '../../directives/count-up.directive';
 import { OffreService } from '../../services/offre.service';
 import { CandidatureService } from '../../services/candidature.service';
 import { AuthService } from '../../services/auth.service';
@@ -12,7 +14,7 @@ import { CandidatureModalComponent } from '../../components/candidature-modal/ca
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, FormsModule, OffreCardComponent, CandidatureModalComponent],
+  imports: [CommonModule, FormsModule, RouterLink, OffreCardComponent, CandidatureModalComponent, RevealDirective, CountUpDirective],
   template: `
     <!-- Hero Section avec Diaporama d'Images en Arrière-plan (Slider HD) -->
     <section class="hero-section">
@@ -31,14 +33,14 @@ import { CandidatureModalComponent } from '../../components/candidature-modal/ca
       <div class="hero-bg-overlay"></div>
 
       <div class="container hero-content">
-        <p class="hero-eyebrow">Université de Labé · Faculté des Sciences et Techniques</p>
-        <h1 class="hero-title">Trouvez votre stage de fin d'études</h1>
-        <p class="hero-subtitle">
+        <p class="hero-eyebrow anim-fade-up">Université de Labé · Faculté des Sciences et Techniques</p>
+        <h1 class="hero-title anim-fade-up" style="animation-delay: 100ms">Trouvez votre stage de fin d'études</h1>
+        <p class="hero-subtitle anim-fade-up" style="animation-delay: 200ms">
           Les offres des entreprises partenaires réunies en un seul endroit.
           Consultez-les, postulez en ligne et suivez vos candidatures.
         </p>
 
-        <div class="search-box">
+        <div class="search-box anim-fade-up" style="animation-delay: 300ms">
           <div class="search-input-group">
             <i class="fa-solid fa-magnifying-glass search-icon"></i>
             <input
@@ -62,17 +64,17 @@ import { CandidatureModalComponent } from '../../components/candidature-modal/ca
           <button (click)="filterOffres()" class="btn btn-primary btn-search">Rechercher</button>
         </div>
 
-        <div class="stats-bar">
+        <div class="stats-bar anim-fade-up" style="animation-delay: 400ms">
           <div class="stat-item">
-            <span class="stat-num">{{ stats.offres }}</span>
+            <span class="stat-num" [appCountUp]="stats.offres"></span>
             <span class="stat-label">offre{{ stats.offres > 1 ? 's' : '' }} ouverte{{ stats.offres > 1 ? 's' : '' }}</span>
           </div>
           <div class="stat-item">
-            <span class="stat-num">{{ stats.entreprises }}</span>
+            <span class="stat-num" [appCountUp]="stats.entreprises"></span>
             <span class="stat-label">entreprise{{ stats.entreprises > 1 ? 's' : '' }}</span>
           </div>
           <div class="stat-item">
-            <span class="stat-num">{{ secteurs.length }}</span>
+            <span class="stat-num" [appCountUp]="secteurs.length"></span>
             <span class="stat-label">secteur{{ secteurs.length > 1 ? 's' : '' }}</span>
           </div>
         </div>
@@ -122,8 +124,10 @@ import { CandidatureModalComponent } from '../../components/candidature-modal/ca
       } @else {
         @if (offres.length > 0) {
           <div class="grid-3">
-            @for (item of offres; track item.id) {
+            @for (item of offres; track item.id; let i = $index) {
               <app-offre-card
+                appReveal
+                [revealDelay]="(i % 3) * 90"
                 [offre]="item"
                 (postuler)="onOpenPostulerModal($event)"
               ></app-offre-card>
@@ -139,6 +143,92 @@ import { CandidatureModalComponent } from '../../components/candidature-modal/ca
         }
       }
     </main>
+
+    <section class="section section-white">
+      <div class="container">
+        <div class="section-head" appReveal>
+          <span class="eyebrow">Comment ça marche</span>
+          <h2>Trois étapes jusqu'à votre stage</h2>
+          <p>Un parcours simple, de la recherche d'offre jusqu'à la réponse de l'entreprise.</p>
+        </div>
+        <div class="steps">
+          <div class="step lift" appReveal>
+            <div class="step-icon"><i class="fa-solid fa-user-plus"></i></div>
+            <h3>Créez votre compte</h3>
+            <p>Inscrivez-vous avec votre matricule et ajoutez votre CV une seule fois.</p>
+          </div>
+          <div class="step lift" appReveal [revealDelay]="120">
+            <div class="step-icon"><i class="fa-solid fa-paper-plane"></i></div>
+            <h3>Postulez en ligne</h3>
+            <p>Choisissez une offre et envoyez votre lettre de motivation en quelques clics.</p>
+          </div>
+          <div class="step lift" appReveal [revealDelay]="240">
+            <div class="step-icon"><i class="fa-solid fa-bell"></i></div>
+            <h3>Suivez la réponse</h3>
+            <p>L'état de chaque candidature est mis à jour dès que l'entreprise l'a étudiée.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="feature">
+          <div class="feature-media" appReveal>
+            <img src="/images/etudiants.jpg" alt="Étudiants travaillant ensemble sur des ordinateurs" loading="lazy" width="1024" height="1024" />
+            <div class="feature-badge"><i class="fa-solid fa-check"></i> Candidature envoyée</div>
+          </div>
+          <div class="feature-text" appReveal [revealDelay]="120">
+            <span class="eyebrow">Pour les étudiants</span>
+            <h2>Un seul endroit pour toutes vos candidatures</h2>
+            <p>Fini les CV envoyés un peu partout : vos candidatures et leurs réponses sont regroupées dans votre espace.</p>
+            <ul class="check-list">
+              <li><i class="fa-solid fa-circle-check"></i> Offres vérifiées, publiées par des entreprises validées par l'université</li>
+              <li><i class="fa-solid fa-circle-check"></i> Recherche par mot-clé et par secteur d'activité</li>
+              <li><i class="fa-solid fa-circle-check"></i> Suivi en temps réel : en attente, acceptée ou refusée</li>
+            </ul>
+            @if (!isLoggedIn) {
+              <a routerLink="/register" class="btn btn-primary">Créer mon compte étudiant</a>
+            }
+          </div>
+        </div>
+
+        <div class="feature feature-reverse">
+          <div class="feature-media" appReveal>
+            <img src="/images/entreprise.jpg" alt="Équipe en entreprise devant des postes de travail" loading="lazy" width="1024" height="1024" />
+            <div class="feature-badge"><i class="fa-solid fa-user-check"></i> Nouveau candidat</div>
+          </div>
+          <div class="feature-text" appReveal [revealDelay]="120">
+            <span class="eyebrow">Pour les entreprises</span>
+            <h2>Recrutez les futurs diplômés de l'université</h2>
+            <p>Publiez vos offres de stage et recevez directement les candidatures des étudiants de la FST.</p>
+            <ul class="check-list">
+              <li><i class="fa-solid fa-circle-check"></i> Publication d'une offre en quelques minutes</li>
+              <li><i class="fa-solid fa-circle-check"></i> CV et lettres de motivation consultables en ligne</li>
+              <li><i class="fa-solid fa-circle-check"></i> Réponse aux candidats en un clic</li>
+            </ul>
+            @if (!isLoggedIn) {
+              <a routerLink="/register" class="btn btn-outline">Inscrire mon entreprise</a>
+            }
+          </div>
+        </div>
+      </div>
+    </section>
+
+    @if (!isLoggedIn) {
+      <section class="section section-cta">
+        <div class="container">
+          <div class="cta-band" appReveal>
+            <h2>Prêt à trouver votre stage ?</h2>
+            <p>Créez votre compte en deux minutes et postulez dès aujourd'hui aux offres disponibles.</p>
+            <div class="cta-actions">
+              <a routerLink="/register" class="btn btn-light">Créer un compte</a>
+              <a routerLink="/login" class="btn btn-ghost-light">Se connecter</a>
+            </div>
+          </div>
+        </div>
+      </section>
+    }
 
     <!-- Modal Formulaire Candidature -->
     @if (selectedOffreForPostuler) {
@@ -365,7 +455,11 @@ export class HomeComponent implements OnInit, OnDestroy {
   alertClass = 'alert alert-success';
 
   // Slideshow state
-  slides: string[] = ['/hero-bg-1.png', '/hero-bg-2.png', '/hero-bg-3.png'];
+  slides: string[] = ['/images/etudiants.jpg', '/images/entreprise.jpg'];
+
+  get isLoggedIn(): boolean {
+    return this.authService.isLoggedIn();
+  }
   currentSlide = signal(0);
   private slideInterval: any;
 

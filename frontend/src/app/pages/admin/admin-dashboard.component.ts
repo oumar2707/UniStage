@@ -1,5 +1,8 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { PageBannerComponent } from '../../components/page-banner/page-banner.component';
+import { RevealDirective } from '../../directives/reveal.directive';
+import { CountUpDirective } from '../../directives/count-up.directive';
 import { AdminService, EntrepriseAdminDTO, EtudiantAdminDTO, GlobalStatsDTO } from '../../services/admin.service';
 import { OffreService } from '../../services/offre.service';
 import { OffreStage } from '../../models/offre.model';
@@ -8,44 +11,45 @@ import { StatusBadgeComponent } from '../../components/status-badge/status-badge
 @Component({
   selector: 'app-admin-dashboard',
   standalone: true,
-  imports: [CommonModule, StatusBadgeComponent],
+  imports: [CommonModule, StatusBadgeComponent, PageBannerComponent, RevealDirective, CountUpDirective],
   template: `
     <div class="dashboard-page container">
-      <div class="page-header">
-        <span class="page-tag"><i class="fa-solid fa-user-shield"></i> Administration</span>
-        <h1>Tableau de bord</h1>
-        <p class="sub-text">Suivi des comptes, des offres et des candidatures</p>
-      </div>
+      <app-page-banner
+        image="/images/etudiants.jpg"
+        eyebrow="Administration"
+        title="Tableau de bord"
+        subtitle="Suivi des comptes, des offres et des candidatures de la plateforme.">
+      </app-page-banner>
 
       <!-- Overview Stats Cards -->
       @if (stats) {
         <div class="grid-4 stats-cards-row">
-          <div class="card stat-card blue">
+          <div class="card stat-card blue lift" appReveal>
             <div class="stat-icon"><i class="fa-solid fa-graduation-cap"></i></div>
             <div class="stat-info">
               <span class="stat-title">Étudiants</span>
-              <span class="stat-value">{{ stats.totalEtudiants }}</span>
+              <span class="stat-value" [appCountUp]="stats.totalEtudiants"></span>
             </div>
           </div>
-          <div class="card stat-card purple">
+          <div class="card stat-card purple lift" appReveal [revealDelay]="80">
             <div class="stat-icon"><i class="fa-solid fa-building"></i></div>
             <div class="stat-info">
               <span class="stat-title">Entreprises</span>
-              <span class="stat-value">{{ stats.totalEntreprises }}</span>
+              <span class="stat-value" [appCountUp]="stats.totalEntreprises"></span>
             </div>
           </div>
-          <div class="card stat-card green">
+          <div class="card stat-card green lift" appReveal [revealDelay]="160">
             <div class="stat-icon"><i class="fa-solid fa-briefcase"></i></div>
             <div class="stat-info">
               <span class="stat-title">Offres Publiées</span>
-              <span class="stat-value">{{ stats.totalOffres }}</span>
+              <span class="stat-value" [appCountUp]="stats.totalOffres"></span>
             </div>
           </div>
-          <div class="card stat-card orange">
+          <div class="card stat-card orange lift" appReveal [revealDelay]="240">
             <div class="stat-icon"><i class="fa-solid fa-file-signature"></i></div>
             <div class="stat-info">
               <span class="stat-title">Candidatures</span>
-              <span class="stat-value">{{ stats.totalCandidatures }}</span>
+              <span class="stat-value" [appCountUp]="stats.totalCandidatures"></span>
             </div>
           </div>
         </div>

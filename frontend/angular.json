@@ -30,8 +30,7 @@
               {
                 "glob": "**/*",
                 "input": "public"
-              },
-              "src/assets"
+              }
             ],
             "optimization": {
               "fonts": {

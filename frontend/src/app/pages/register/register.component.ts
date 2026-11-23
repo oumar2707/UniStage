@@ -9,8 +9,21 @@ import { AuthService } from '../../services/auth.service';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, RouterLink],
   template: `
-    <div class="auth-page container">
-      <div class="auth-card card">
+    <div class="auth-split">
+      <aside class="auth-visual">
+        <img [src]="selectedRole === 'ETUDIANT' ? '/images/etudiants.jpg' : '/images/entreprise.jpg'" alt="" />
+        <div class="auth-quote anim-fade-up" style="animation-delay: 200ms">
+          @if (selectedRole === 'ETUDIANT') {
+            <h2>Rejoignez les étudiants de la FST.</h2>
+            <p>Un compte suffit pour postuler à toutes les offres et suivre les réponses des entreprises.</p>
+          } @else {
+            <h2>Recrutez vos futurs talents.</h2>
+            <p>Publiez vos offres de stage et recevez les candidatures des étudiants de l'Université de Labé.</p>
+          }
+        </div>
+      </aside>
+      <div class="auth-form-side">
+      <div class="auth-card card anim-fade-up">
         <div class="auth-header">
           <h2 class="auth-title">Créer un compte</h2>
           <p class="auth-sub">Choisissez votre type de compte</p>
@@ -206,6 +219,7 @@ import { AuthService } from '../../services/auth.service';
         <div class="auth-footer compact-footer">
           <p>Déjà inscrit ? <a routerLink="/login">Se connecter</a></p>
         </div>
+      </div>
       </div>
     </div>
   `,

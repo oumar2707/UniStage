@@ -1,5 +1,7 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { PageBannerComponent } from '../../components/page-banner/page-banner.component';
+import { RevealDirective } from '../../directives/reveal.directive';
 import { RouterLink } from '@angular/router';
 import { OffreService } from '../../services/offre.service';
 import { CandidatureService } from '../../services/candidature.service';
@@ -11,19 +13,18 @@ import { CandidatureDetailModalComponent } from '../../components/candidature-de
 @Component({
   selector: 'app-entreprise-dashboard',
   standalone: true,
-  imports: [CommonModule, RouterLink, StatusBadgeComponent, CandidatureDetailModalComponent],
+  imports: [CommonModule, RouterLink, StatusBadgeComponent, CandidatureDetailModalComponent, PageBannerComponent, RevealDirective],
   template: `
     <div class="dashboard-page container">
-      <div class="page-header flex-between">
-        <div>
-          <span class="page-tag"><i class="fa-solid fa-building"></i> Espace entreprise</span>
-          <h1>Tableau de bord</h1>
-          <p class="sub-text">Gestion de vos offres de stage et traitement des candidatures reçues</p>
-        </div>
-        <a routerLink="/entreprise/offres/nouvelle" class="btn btn-primary btn-new-offre">
+      <app-page-banner
+        image="/images/entreprise.jpg"
+        eyebrow="Espace entreprise"
+        title="Tableau de bord"
+        subtitle="Gérez vos offres de stage et répondez aux candidatures reçues.">
+        <a routerLink="/entreprise/offres/nouvelle" class="btn btn-light">
           <i class="fa-solid fa-plus"></i> Nouvelle offre
         </a>
-      </div>
+      </app-page-banner>
 
       <!-- Navigation Tabs -->
       <div class="tabs-nav-container">

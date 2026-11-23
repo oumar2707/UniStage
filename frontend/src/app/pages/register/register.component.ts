@@ -12,8 +12,8 @@ import { AuthService } from '../../services/auth.service';
     <div class="auth-page container">
       <div class="auth-card card">
         <div class="auth-header">
-          <h2 class="auth-title">Création de Compte UniStage</h2>
-          <p class="auth-sub">Inscrivez-vous en tant qu'étudiant finissant ou entreprise partenaire</p>
+          <h2 class="auth-title">Créer un compte</h2>
+          <p class="auth-sub">Choisissez votre type de compte</p>
 
           <!-- Toggle Role Tabs -->
           <div class="role-toggle">
@@ -23,7 +23,7 @@ import { AuthService } from '../../services/auth.service';
               (click)="selectRole('ETUDIANT')"
               class="role-btn"
             >
-              <i class="fa-solid fa-user-graduate"></i> Étudiant Finissant
+              <i class="fa-solid fa-user-graduate"></i> Étudiant
             </button>
             <button
               type="button"
@@ -31,7 +31,7 @@ import { AuthService } from '../../services/auth.service';
               (click)="selectRole('ENTREPRISE')"
               class="role-btn"
             >
-              <i class="fa-solid fa-building"></i> Entreprise Partenaire
+              <i class="fa-solid fa-building"></i> Entreprise
             </button>
           </div>
         </div>
@@ -59,7 +59,7 @@ import { AuthService } from '../../services/auth.service';
 
             <div class="grid-2 gap-compact">
               <div class="form-group compact">
-                <label class="form-label" for="emailEtu">Email Universitaire *</label>
+                <label class="form-label" for="emailEtu">Adresse e-mail *</label>
                 <input id="emailEtu" type="email" formControlName="email" class="form-control compact-input" placeholder="alpha.diallo@etudiant.univ-labe.edu.gn" />
               </div>
 
@@ -94,7 +94,7 @@ import { AuthService } from '../../services/auth.service';
             <!-- Champ CV avec Téléversement de fichier -->
             <div class="form-group compact">
               <label class="form-label">
-                <i class="fa-solid fa-file-pdf text-danger"></i> Curriculum Vitae (CV) <span class="badge-tag">Recommandé</span>
+                <i class="fa-solid fa-file-pdf text-danger"></i> CV <span class="badge-tag">Recommandé</span>
               </label>
               
               <div class="cv-register-upload">
@@ -137,7 +137,7 @@ import { AuthService } from '../../services/auth.service';
               @if (loading) {
                 <i class="fa-solid fa-spinner fa-spin"></i> Inscription...
               } @else {
-                <i class="fa-solid fa-user-plus"></i> S'inscrire comme Étudiant
+                <i class="fa-solid fa-user-plus"></i> Créer mon compte étudiant
               }
             </button>
           </form>
@@ -148,30 +148,30 @@ import { AuthService } from '../../services/auth.service';
           <form [formGroup]="entrepriseForm" (ngSubmit)="onSubmitEntreprise()" class="compact-form">
             <div class="grid-2 gap-compact">
               <div class="form-group compact">
-                <label class="form-label" for="raisonSociale">Raison Sociale *</label>
+                <label class="form-label" for="raisonSociale">Raison sociale *</label>
                 <input id="raisonSociale" formControlName="raisonSociale" class="form-control compact-input" placeholder="Orange Guinee Labé" />
               </div>
 
               <div class="form-group compact">
-                <label class="form-label" for="secteurActivite">Secteur d'Activité *</label>
+                <label class="form-label" for="secteurActivite">Secteur d'activité *</label>
                 <input id="secteurActivite" formControlName="secteurActivite" class="form-control compact-input" placeholder="Télécommunications & IT" />
               </div>
             </div>
 
             <div class="grid-2 gap-compact">
               <div class="form-group compact">
-                <label class="form-label" for="nomEnt">Nom du Contact *</label>
+                <label class="form-label" for="nomEnt">Nom du contact *</label>
                 <input id="nomEnt" formControlName="nom" class="form-control compact-input" placeholder="Diallo" />
               </div>
               <div class="form-group compact">
-                <label class="form-label" for="prenomEnt">Prénom du Contact *</label>
+                <label class="form-label" for="prenomEnt">Prénom du contact *</label>
                 <input id="prenomEnt" formControlName="prenom" class="form-control compact-input" placeholder="Mamadou" />
               </div>
             </div>
 
             <div class="grid-2 gap-compact">
               <div class="form-group compact">
-                <label class="form-label" for="emailEnt">Email Pro *</label>
+                <label class="form-label" for="emailEnt">E-mail professionnel *</label>
                 <input id="emailEnt" type="email" formControlName="email" class="form-control compact-input" placeholder="contact@entreprise.gn" />
               </div>
 
@@ -188,7 +188,7 @@ import { AuthService } from '../../services/auth.service';
               </div>
 
               <div class="form-group compact">
-                <label class="form-label" for="siteWeb">Site Web / Lien</label>
+                <label class="form-label" for="siteWeb">Site web</label>
                 <input id="siteWeb" formControlName="siteWeb" class="form-control compact-input" placeholder="https://..." />
               </div>
             </div>
@@ -197,14 +197,14 @@ import { AuthService } from '../../services/auth.service';
               @if (loading) {
                 <i class="fa-solid fa-spinner fa-spin"></i> Inscription...
               } @else {
-                <i class="fa-solid fa-building-circle-check"></i> S'inscrire comme Entreprise
+                <i class="fa-solid fa-building-circle-check"></i> Créer mon compte entreprise
               }
             </button>
           </form>
         }
 
         <div class="auth-footer compact-footer">
-          <p>Vous avez déjà un compte ? <a routerLink="/login">Connectez-vous ici</a></p>
+          <p>Déjà inscrit ? <a routerLink="/login">Se connecter</a></p>
         </div>
       </div>
     </div>

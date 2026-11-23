@@ -12,9 +12,9 @@ import { StatusBadgeComponent } from '../../components/status-badge/status-badge
   template: `
     <div class="dashboard-page container">
       <div class="page-header">
-        <span class="page-tag"><i class="fa-solid fa-user-shield"></i> Administration Système</span>
-        <h1>Supervision UniStage — Université de Labé</h1>
-        <p class="sub-text">Contrôle global des comptes (Étudiants & Entreprises), CVs, modération des offres et statistiques</p>
+        <span class="page-tag"><i class="fa-solid fa-user-shield"></i> Administration</span>
+        <h1>Tableau de bord</h1>
+        <p class="sub-text">Suivi des comptes, des offres et des candidatures</p>
       </div>
 
       <!-- Overview Stats Cards -->
@@ -23,7 +23,7 @@ import { StatusBadgeComponent } from '../../components/status-badge/status-badge
           <div class="card stat-card blue">
             <div class="stat-icon"><i class="fa-solid fa-graduation-cap"></i></div>
             <div class="stat-info">
-              <span class="stat-title">Étudiants L3</span>
+              <span class="stat-title">Étudiants</span>
               <span class="stat-value">{{ stats.totalEtudiants }}</span>
             </div>
           </div>
@@ -55,13 +55,13 @@ import { StatusBadgeComponent } from '../../components/status-badge/status-badge
       <div class="tabs-nav-container mt-3">
         <div class="tabs-nav">
           <button [class.active]="activeTab === 'etudiants'" (click)="activeTab = 'etudiants'" class="tab-btn">
-            <i class="fa-solid fa-graduation-cap"></i> Gestion des Étudiants ({{ etudiants.length }})
+            <i class="fa-solid fa-graduation-cap"></i> Étudiants ({{ etudiants.length }})
           </button>
           <button [class.active]="activeTab === 'entreprises'" (click)="activeTab = 'entreprises'" class="tab-btn">
-            <i class="fa-solid fa-building"></i> Gestion des Entreprises ({{ entreprises.length }})
+            <i class="fa-solid fa-building"></i> Entreprises ({{ entreprises.length }})
           </button>
           <button [class.active]="activeTab === 'offres'" (click)="activeTab = 'offres'" class="tab-btn">
-            <i class="fa-solid fa-list-check"></i> Modération des Offres ({{ offres.length }})
+            <i class="fa-solid fa-list-check"></i> Offres ({{ offres.length }})
           </button>
         </div>
       </div>
@@ -76,7 +76,7 @@ import { StatusBadgeComponent } from '../../components/status-badge/status-badge
       @if (activeTab === 'etudiants') {
         <div class="table-responsive-wrapper card mt-3">
           <div class="table-title-bar flex-between">
-            <h3><i class="fa-solid fa-users"></i> Liste des Étudiants Finissants (L3 Informatique)</h3>
+            <h3><i class="fa-solid fa-users"></i> Étudiants inscrits</h3>
             <span class="badge-count">{{ etudiants.length }} inscrit(s)</span>
           </div>
           @if (etudiants.length > 0) {
@@ -85,11 +85,11 @@ import { StatusBadgeComponent } from '../../components/status-badge/status-badge
                 <tr>
                   <th>Matricule</th>
                   <th>Nom & Prénom</th>
-                  <th>Email Universitaire</th>
+                  <th>E-mail</th>
                   <th>Filière & Niveau</th>
                   <th>Téléphone</th>
-                  <th>Curriculum Vitae (CV)</th>
-                  <th>Actions Admin</th>
+                  <th>CV</th>
+                  <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -135,7 +135,7 @@ import { StatusBadgeComponent } from '../../components/status-badge/status-badge
       @if (activeTab === 'entreprises') {
         <div class="table-responsive-wrapper card mt-3">
           <div class="table-title-bar flex-between">
-            <h3><i class="fa-solid fa-building"></i> Entreprises Partenaires Réelles</h3>
+            <h3><i class="fa-solid fa-building"></i> Entreprises inscrites</h3>
             <span class="badge-count">{{ entreprises.length }} entreprise(s)</span>
           </div>
           <table class="data-table">

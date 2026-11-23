@@ -31,32 +31,13 @@ import { CandidatureModalComponent } from '../../components/candidature-modal/ca
       <div class="hero-bg-overlay"></div>
 
       <div class="container hero-content">
-        <h1 class="hero-title">
-          Découvrez vos Offres de Stage de Fin d'Études
-        </h1>
+        <p class="hero-eyebrow">Université de Labé · Faculté des Sciences et Techniques</p>
+        <h1 class="hero-title">Trouvez votre stage de fin d'études</h1>
         <p class="hero-subtitle">
-          Plateforme officielle de gestion des offres de stage pour l'Université de Labé. Postulez en un clic auprès de nos entreprises partenaires réelles (Kouma Academy, Nesten Group, ANSUTEN, Orange Guinée, Sylla Tech Labs).
+          Les offres des entreprises partenaires réunies en un seul endroit.
+          Consultez-les, postulez en ligne et suivez vos candidatures.
         </p>
 
-        <!-- Stats Quick Overview Bar -->
-        <div class="stats-bar">
-          <div class="stat-item">
-            <span class="stat-num">5</span>
-            <span class="stat-label">Entreprises Partenaires</span>
-          </div>
-          <div class="stat-divider"></div>
-          <div class="stat-item">
-            <span class="stat-num">100%</span>
-            <span class="stat-label">Stages Valides L3</span>
-          </div>
-          <div class="stat-divider"></div>
-          <div class="stat-item">
-            <span class="stat-num">Labé & Regional</span>
-            <span class="stat-label">Guinée</span>
-          </div>
-        </div>
-
-        <!-- Search & Filter Bar -->
         <div class="search-box">
           <div class="search-input-group">
             <i class="fa-solid fa-magnifying-glass search-icon"></i>
@@ -64,24 +45,36 @@ import { CandidatureModalComponent } from '../../components/candidature-modal/ca
               type="text"
               [(ngModel)]="searchKeyword"
               (keyup.enter)="filterOffres()"
-              placeholder="Rechercher (Java, Python, Angular, Réseaux, Cisco)..."
+              placeholder="Mot-clé : Java, Angular, réseaux…"
               class="search-input"
+              aria-label="Rechercher une offre"
             />
           </div>
           <div class="search-select-group">
             <i class="fa-solid fa-layer-group filter-icon"></i>
-            <select [(ngModel)]="selectedSecteur" (change)="filterOffres()" class="search-select">
-              <option value="">Tous les secteurs d'activité</option>
-              <option value="Formation Tech & Intelligence Artificielle">Kouma Academy (IA & Tech)</option>
-              <option value="Ingénierie & Systèmes d'Information">Nesten Group (Ingénierie Web)</option>
-              <option value="Télécommunications & Inclusion Numérique">ANSUTEN (Télécoms & Numérique)</option>
-              <option value="Télécommunications & Informatique">Orange Guinée (Réseaux & IT)</option>
-              <option value="Développement Web & IA">Sylla Tech Labs (Front-End & Mobile)</option>
+            <select [(ngModel)]="selectedSecteur" (change)="filterOffres()" class="search-select" aria-label="Secteur d'activité">
+              <option value="">Tous les secteurs</option>
+              @for (s of secteurs; track s) {
+                <option [value]="s">{{ s }}</option>
+              }
             </select>
           </div>
-          <button (click)="filterOffres()" class="btn btn-primary btn-search">
-            <i class="fa-solid fa-bolt"></i> Rechercher
-          </button>
+          <button (click)="filterOffres()" class="btn btn-primary btn-search">Rechercher</button>
+        </div>
+
+        <div class="stats-bar">
+          <div class="stat-item">
+            <span class="stat-num">{{ stats.offres }}</span>
+            <span class="stat-label">offre{{ stats.offres > 1 ? 's' : '' }} ouverte{{ stats.offres > 1 ? 's' : '' }}</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-num">{{ stats.entreprises }}</span>
+            <span class="stat-label">entreprise{{ stats.entreprises > 1 ? 's' : '' }}</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-num">{{ secteurs.length }}</span>
+            <span class="stat-label">secteur{{ secteurs.length > 1 ? 's' : '' }}</span>
+          </div>
         </div>
 
         <!-- Indicateurs de Carrousel Flottants -->
@@ -108,19 +101,23 @@ import { CandidatureModalComponent } from '../../components/candidature-modal/ca
 
       <div class="section-header flex-between">
         <div>
-          <h2>Offres de Stage Ouvertes</h2>
-          <p class="section-sub">{{ offres.length }} opportunité(s) disponible(s) en ce moment</p>
+          <h2>Offres de stage</h2>
+          <p class="section-sub">
+            {{ offres.length }} offre{{ offres.length > 1 ? 's' : '' }}
+            {{ searchKeyword || selectedSecteur ? 'correspondant à votre recherche' : 'disponible' + (offres.length > 1 ? 's' : '') }}
+          </p>
         </div>
         @if (searchKeyword || selectedSecteur) {
           <button (click)="resetFilters()" class="btn btn-secondary btn-sm">
-            <i class="fa-solid fa-rotate-left"></i> Réinitialiser les filtres
+            <i class="fa-solid fa-xmark"></i> Effacer les filtres
           </button>
         }
       </div>
 
       @if (loading) {
         <div class="loading-spinner">
-          <i class="fa-solid fa-spinner fa-spin"></i> Chargement des offres de stage...
+          <i class="fa-solid fa-spinner fa-spin"></i> Chargement des offres…
+          <p class="loading-hint">Le premier chargement peut prendre jusqu'à une minute.</p>
         </div>
       } @else {
         @if (offres.length > 0) {
@@ -135,8 +132,8 @@ import { CandidatureModalComponent } from '../../components/candidature-modal/ca
         } @else {
           <div class="empty-state card">
             <i class="fa-solid fa-folder-open empty-icon"></i>
-            <h3>Aucune offre de stage ne correspond à vos critères</h3>
-            <p>Essayez de modifier vos termes de recherche ou de réinitialiser les filtres.</p>
+            <h3>Aucune offre ne correspond à votre recherche</h3>
+            <p>Essayez un autre mot-clé ou un autre secteur.</p>
             <button (click)="resetFilters()" class="btn btn-secondary mt-3">Voir toutes les offres</button>
           </div>
         }
@@ -194,7 +191,7 @@ import { CandidatureModalComponent } from '../../components/candidature-modal/ca
       left: 0;
       right: 0;
       bottom: 0;
-      background: linear-gradient(135deg, rgba(11, 19, 43, 0.78) 0%, rgba(28, 37, 65, 0.72) 50%, rgba(15, 23, 42, 0.82) 100%);
+      background: rgba(15, 27, 61, 0.8);
       z-index: 1;
     }
     .hero-content {
@@ -202,74 +199,55 @@ import { CandidatureModalComponent } from '../../components/candidature-modal/ca
       z-index: 2;
       width: 100%;
     }
+    .hero-eyebrow {
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: #c7d2fe;
+      margin: 0 0 0.75rem;
+    }
     .hero-title {
-      font-size: 2.85rem;
+      font-size: 2.75rem;
       color: #ffffff;
-      margin-bottom: 1rem;
-      max-width: 850px;
-      margin-left: auto;
-      margin-right: auto;
-      text-shadow: 0 2px 14px rgba(0, 0, 0, 0.6);
+      margin: 0 auto 1rem;
+      max-width: 760px;
     }
     .hero-subtitle {
-      font-size: 1.1rem;
-      color: #f1f5f9;
-      max-width: 760px;
-      margin: 0 auto 2.25rem;
+      font-size: 1.075rem;
+      color: #e5e7eb;
+      max-width: 620px;
+      margin: 0 auto 2rem;
       line-height: 1.6;
-      text-shadow: 0 1px 8px rgba(0, 0, 0, 0.6);
     }
 
-    /* Stats Bar */
     .stats-bar {
       display: flex;
-      align-items: center;
       justify-content: center;
-      gap: 2rem;
-      margin-bottom: 2.5rem;
-      background: rgba(11, 19, 43, 0.65);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      padding: 0.85rem 2rem;
-      border-radius: 50px;
-      width: max-content;
-      margin-left: auto;
-      margin-right: auto;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+      gap: 2.5rem;
+      margin-top: 1.75rem;
     }
     .stat-item {
       display: flex;
-      flex-direction: column;
-      align-items: center;
+      align-items: baseline;
+      gap: 0.4rem;
+      color: #e5e7eb;
+      font-size: 0.9rem;
     }
     .stat-num {
       font-family: 'Outfit', sans-serif;
-      font-size: 1.5rem;
-      font-weight: 800;
-      color: #38bdf8;
-    }
-    .stat-label {
-      font-size: 0.775rem;
-      color: #e2e8f0;
+      font-size: 1.35rem;
       font-weight: 700;
-      text-transform: uppercase;
-    }
-    .stat-divider {
-      width: 1px;
-      height: 28px;
-      background: rgba(255, 255, 255, 0.25);
+      color: #ffffff;
     }
 
-    /* Search Box */
     .search-box {
       background: #ffffff;
       border-radius: var(--radius-md);
-      padding: 0.75rem;
+      padding: 0.6rem;
       display: flex;
-      gap: 0.75rem;
-      max-width: 950px;
-      margin: 0 auto 1.5rem;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.45);
+      gap: 0.6rem;
+      max-width: 860px;
+      margin: 0 auto;
+      box-shadow: var(--shadow-lg);
     }
     .search-input-group, .search-select-group {
       position: relative;
@@ -291,7 +269,10 @@ import { CandidatureModalComponent } from '../../components/candidature-modal/ca
       color: var(--primary);
       background: #f8fafc;
     }
+    .search-input, .search-select { font-family: inherit; }
     .search-input:focus, .search-select:focus {
+      outline: none;
+      border-color: var(--accent);
       background: #ffffff;
     }
     .btn-search {
@@ -308,19 +289,19 @@ import { CandidatureModalComponent } from '../../components/candidature-modal/ca
       margin-top: 1rem;
     }
     .indicator-dot {
-      width: 12px;
-      height: 12px;
+      width: 8px;
+      height: 8px;
       border-radius: 50%;
       background: rgba(255, 255, 255, 0.35);
       border: none;
+      padding: 0;
       cursor: pointer;
       transition: all 0.3s ease;
     }
     .indicator-dot.active {
-      background: #38bdf8;
-      width: 32px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(56, 189, 248, 0.6);
+      background: #ffffff;
+      width: 22px;
+      border-radius: 8px;
     }
 
     /* Main Section */
@@ -338,8 +319,12 @@ import { CandidatureModalComponent } from '../../components/candidature-modal/ca
     .loading-spinner {
       text-align: center;
       padding: 4rem 0;
-      font-size: 1.1rem;
+      font-size: 1.05rem;
       color: var(--text-muted);
+    }
+    .loading-hint {
+      font-size: 0.85rem;
+      margin-top: 0.5rem;
     }
     .empty-state {
       text-align: center;
@@ -355,14 +340,10 @@ import { CandidatureModalComponent } from '../../components/candidature-modal/ca
     @media (max-width: 768px) {
       .hero-section { padding: 3.5rem 0 3rem; }
       .search-box { flex-direction: column; }
-      .hero-title { font-size: 2rem; }
-      .stats-bar {
-        flex-direction: column;
-        gap: 0.75rem;
-        border-radius: var(--radius-md);
-        width: 100%;
-      }
-      .stat-divider { display: none; }
+      .hero-title { font-size: 1.9rem; }
+      .hero-subtitle { font-size: 1rem; }
+      .stats-bar { gap: 1.25rem; flex-wrap: wrap; }
+      .stat-num { font-size: 1.15rem; }
     }
   `]
 })
@@ -373,6 +354,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   private router = inject(Router);
 
   offres: OffreStage[] = [];
+  secteurs: string[] = [];
+  stats = { offres: 0, entreprises: 0 };
   loading = true;
   searchKeyword = '';
   selectedSecteur = '';
@@ -412,6 +395,9 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.offreService.getOffresPubliques(this.selectedSecteur, this.searchKeyword).subscribe({
       next: (data) => {
         this.offres = data;
+        if (!this.searchKeyword && !this.selectedSecteur) {
+          this.updateOverview(data);
+        }
         this.loading = false;
       },
       error: (err) => {
@@ -423,6 +409,16 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   filterOffres() {
     this.loadOffres();
+  }
+
+  private updateOverview(all: OffreStage[]) {
+    const unique = (values: (string | undefined)[]) =>
+      [...new Set(values.filter((v): v is string => !!v))].sort((a, b) => a.localeCompare(b, 'fr'));
+    this.secteurs = unique(all.map(o => o.secteurActivite));
+    this.stats = {
+      offres: all.filter(o => o.statut === 'OUVERTE').length,
+      entreprises: unique(all.map(o => o.raisonSociale)).length
+    };
   }
 
   resetFilters() {

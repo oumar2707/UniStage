@@ -28,7 +28,7 @@ import { OffreStage } from '../../models/offre.model';
             <!-- CHAMP CV JOINT -->
             <div class="form-group mb-3">
               <label class="form-label" for="cvInput">
-                <i class="fa-solid fa-file-pdf text-accent"></i> Curriculum Vitae (CV) <span class="badge-tag">Recommandé</span>
+                <i class="fa-solid fa-file-pdf text-accent"></i> CV <span class="badge-tag">Recommandé</span>
               </label>
               
               <div class="cv-upload-zone">
@@ -67,7 +67,7 @@ import { OffreStage } from '../../models/offre.model';
             <!-- CHAMP LETTRE DE MOTIVATION -->
             <div class="form-group">
               <label class="form-label" for="lettreMotivation">
-                <i class="fa-solid fa-pen-nib text-accent"></i> Lettre de Motivation <span class="required">*</span>
+                <i class="fa-solid fa-pen-nib text-accent"></i> Lettre de motivation <span class="required">*</span>
               </label>
               <textarea
                 id="lettreMotivation"

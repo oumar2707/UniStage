@@ -3,51 +3,50 @@ import { CommonModule } from '@angular/common';
 import { OffreStage } from '../../models/offre.model';
 import { StatusBadgeComponent } from '../status-badge/status-badge.component';
 
+const AVATAR_COLORS = ['#1d4ed8', '#0f766e', '#7c3aed', '#b45309', '#be185d', '#0369a1'];
+
 @Component({
   selector: 'app-offre-card',
   standalone: true,
   imports: [CommonModule, StatusBadgeComponent],
   template: `
     <article class="card offre-card">
-      <div class="offre-header">
-        <div class="company-avatar" [ngClass]="getCompanyClass(offre.raisonSociale)">
-          <i [class]="getCompanyIcon(offre.raisonSociale)"></i>
-        </div>
-        <div class="offre-title-area">
-          <div class="company-row">
-            <span class="company-name">{{ offre.raisonSociale || 'Entreprise Partenaire' }}</span>
-            <span class="verified-tag"><i class="fa-solid fa-circle-check"></i> Vérifié</span>
+      <div class="offre-top">
+        <div class="company">
+          <div class="company-avatar" [style.background]="avatarColor(offre.raisonSociale)">
+            {{ initials(offre.raisonSociale) }}
           </div>
-          <h3 class="offre-title">{{ offre.titre }}</h3>
+          <div class="company-text">
+            <span class="company-name">{{ offre.raisonSociale || 'Entreprise' }}</span>
+            @if (offre.secteurActivite) {
+              <span class="company-sector">{{ offre.secteurActivite }}</span>
+            }
+          </div>
         </div>
         <app-status-badge [status]="offre.statut || 'OUVERTE'"></app-status-badge>
       </div>
 
+      <h3 class="offre-title">{{ offre.titre }}</h3>
       <p class="offre-desc">{{ offre.description }}</p>
 
       <div class="offre-meta">
-        <span><i class="fa-solid fa-location-dot meta-icon"></i> {{ offre.lieu }}</span>
-        @if (offre.secteurActivite) {
-          <span><i class="fa-solid fa-layer-group meta-icon"></i> {{ offre.secteurActivite }}</span>
-        }
+        <span><i class="fa-solid fa-location-dot"></i> {{ offre.lieu }}</span>
         @if (offre.dateDebut) {
-          <span><i class="fa-regular fa-calendar-days meta-icon"></i> Début: {{ offre.dateDebut }}</span>
+          <span><i class="fa-regular fa-calendar"></i> Dès le {{ offre.dateDebut | date: 'd MMM yyyy' }}</span>
         }
       </div>
 
       <div class="skills-chips">
         @for (skill of getSkillsArray(offre.competencesRequises); track skill) {
-          <span class="chip"><i class="fa-solid fa-code"></i> {{ skill }}</span>
+          <span class="chip">{{ skill }}</span>
         }
       </div>
 
-      <div class="offre-actions">
-        @if (showPostulerBtn && offre.statut === 'OUVERTE') {
-          <button (click)="onPostuler()" class="btn btn-primary btn-full">
-            <i class="fa-solid fa-paper-plane"></i> Postuler à cette offre
-          </button>
-        }
-      </div>
+      @if (showPostulerBtn && offre.statut === 'OUVERTE') {
+        <button (click)="onPostuler()" class="btn btn-primary btn-full">
+          Postuler
+        </button>
+      }
     </article>
   `,
   styles: [`
@@ -55,122 +54,93 @@ import { StatusBadgeComponent } from '../status-badge/status-badge.component';
       display: flex;
       flex-direction: column;
       height: 100%;
-      background: #ffffff;
-      border: 1px solid var(--border-color);
-      border-radius: var(--radius-md);
-      transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.25s ease, border-color 0.25s ease;
-      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
     }
     .offre-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 15px 30px rgba(15, 23, 42, 0.1);
-      border-color: #cbd5e1;
+      box-shadow: var(--shadow-md);
+      border-color: #d1d5db;
     }
-    .offre-header {
+    .offre-top {
       display: flex;
       align-items: flex-start;
-      gap: 0.85rem;
+      justify-content: space-between;
+      gap: 0.75rem;
       margin-bottom: 1rem;
     }
+    .company {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      min-width: 0;
+    }
     .company-avatar {
-      width: 48px;
-      height: 48px;
-      border-radius: 12px;
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.3rem;
       flex-shrink: 0;
       color: #ffffff;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      font-weight: 600;
+      font-size: 0.95rem;
     }
-    .avatar-orange { background: linear-gradient(135deg, #ff7900 0%, #e65100 100%); }
-    .avatar-kouma { background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%); }
-    .avatar-nesten { background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%); }
-    .avatar-ansuten { background: linear-gradient(135deg, #059669 0%, #047857 100%); }
-    .avatar-sylla { background: linear-gradient(135deg, #06b6d4 0%, #0e7490 100%); }
-    .avatar-default { background: linear-gradient(135deg, #0b132b 0%, #1c2541 100%); }
-
-    .offre-title-area {
-      flex: 1;
-    }
-    .company-row {
+    .company-text {
       display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      margin-bottom: 0.2rem;
+      flex-direction: column;
+      min-width: 0;
     }
     .company-name {
-      font-size: 0.8rem;
-      font-weight: 800;
-      color: var(--primary);
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-main);
     }
-    .verified-tag {
-      font-size: 0.7rem;
-      color: #059669;
-      background: #ecfdf5;
-      padding: 0.15rem 0.45rem;
-      border-radius: 20px;
-      font-weight: 700;
+    .company-sector {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     .offre-title {
-      font-size: 1.1rem;
-      color: var(--primary);
-      margin: 0;
-      line-height: 1.35;
+      font-size: 1.15rem;
+      margin: 0 0 0.5rem;
     }
     .offre-desc {
       font-size: 0.9rem;
       color: var(--text-muted);
-      margin-bottom: 1.25rem;
+      margin: 0 0 1rem;
       display: -webkit-box;
       -webkit-line-clamp: 3;
       -webkit-box-orient: vertical;
       overflow: hidden;
-      line-height: 1.5;
+      line-height: 1.55;
     }
     .offre-meta {
       display: flex;
       flex-wrap: wrap;
-      gap: 0.85rem;
-      font-size: 0.825rem;
+      gap: 0.4rem 1.1rem;
+      font-size: 0.85rem;
       color: var(--text-main);
       margin-bottom: 1rem;
-      padding-top: 0.75rem;
-      border-top: 1px dashed var(--border-color);
     }
-    .offre-meta span {
-      display: flex;
-      align-items: center;
-      gap: 0.4rem;
-      font-weight: 500;
-    }
-    .meta-icon {
-      color: var(--accent);
+    .offre-meta i {
+      color: var(--text-muted);
+      margin-right: 0.3rem;
     }
     .skills-chips {
       display: flex;
       flex-wrap: wrap;
-      gap: 0.45rem;
+      gap: 0.4rem;
       margin-bottom: 1.25rem;
       margin-top: auto;
     }
     .chip {
-      background: #f1f5f9;
-      color: #334155;
-      font-size: 0.75rem;
-      font-weight: 700;
-      padding: 0.25rem 0.65rem;
+      background: var(--accent-soft);
+      color: var(--accent-dark);
+      font-size: 0.775rem;
+      font-weight: 500;
+      padding: 0.2rem 0.6rem;
       border-radius: 6px;
-      display: flex;
-      align-items: center;
-      gap: 0.35rem;
-      border: 1px solid #e2e8f0;
-    }
-    .offre-actions {
-      margin-top: 0.5rem;
     }
     .btn-full {
       width: 100%;
@@ -182,26 +152,17 @@ export class OffreCardComponent {
   @Input() showPostulerBtn = true;
   @Output() postuler = new EventEmitter<OffreStage>();
 
-  getCompanyClass(raisonSociale?: string): string {
-    if (!raisonSociale) return 'avatar-default';
-    const name = raisonSociale.toLowerCase();
-    if (name.includes('orange')) return 'avatar-orange';
-    if (name.includes('kouma')) return 'avatar-kouma';
-    if (name.includes('nesten')) return 'avatar-nesten';
-    if (name.includes('ansuten')) return 'avatar-ansuten';
-    if (name.includes('sylla')) return 'avatar-sylla';
-    return 'avatar-default';
+  initials(name?: string): string {
+    if (!name) return '?';
+    const words = name.replace(/\b(SARL|SA|SAS|Group)\b/gi, '').trim().split(/\s+/);
+    return words.slice(0, 2).map(w => w.charAt(0).toUpperCase()).join('');
   }
 
-  getCompanyIcon(raisonSociale?: string): string {
-    if (!raisonSociale) return 'fa-solid fa-building';
-    const name = raisonSociale.toLowerCase();
-    if (name.includes('orange')) return 'fa-solid fa-tower-cell';
-    if (name.includes('kouma')) return 'fa-solid fa-brain';
-    if (name.includes('nesten')) return 'fa-solid fa-laptop-code';
-    if (name.includes('ansuten')) return 'fa-solid fa-network-wired';
-    if (name.includes('sylla')) return 'fa-solid fa-code';
-    return 'fa-solid fa-building';
+  avatarColor(name?: string): string {
+    if (!name) return AVATAR_COLORS[0];
+    let hash = 0;
+    for (const c of name) hash = (hash * 31 + c.charCodeAt(0)) | 0;
+    return AVATAR_COLORS[Math.abs(hash) % AVATAR_COLORS.length];
   }
 
   getSkillsArray(skillsString?: string): string[] {

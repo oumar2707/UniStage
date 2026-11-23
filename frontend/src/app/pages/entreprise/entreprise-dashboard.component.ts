@@ -16,12 +16,12 @@ import { CandidatureDetailModalComponent } from '../../components/candidature-de
     <div class="dashboard-page container">
       <div class="page-header flex-between">
         <div>
-          <span class="page-tag"><i class="fa-solid fa-building"></i> Espace Partenaire</span>
-          <h1>Tableau de Bord Entreprise</h1>
+          <span class="page-tag"><i class="fa-solid fa-building"></i> Espace entreprise</span>
+          <h1>Tableau de bord</h1>
           <p class="sub-text">Gestion de vos offres de stage et traitement des candidatures reçues</p>
         </div>
         <a routerLink="/entreprise/offres/nouvelle" class="btn btn-primary btn-new-offre">
-          <i class="fa-solid fa-plus"></i> Publier une Nouvelle Offre
+          <i class="fa-solid fa-plus"></i> Nouvelle offre
         </a>
       </div>
 
@@ -29,10 +29,10 @@ import { CandidatureDetailModalComponent } from '../../components/candidature-de
       <div class="tabs-nav-container">
         <div class="tabs-nav">
           <button [class.active]="activeTab === 'offres'" (click)="activeTab = 'offres'" class="tab-btn">
-            <i class="fa-solid fa-list-check"></i> Mes Offres de Stage ({{ offres.length }})
+            <i class="fa-solid fa-list-check"></i> Mes offres ({{ offres.length }})
           </button>
           <button [class.active]="activeTab === 'candidatures'" (click)="activeTab = 'candidatures'" class="tab-btn">
-            <i class="fa-solid fa-users"></i> Candidatures Reçues ({{ candidatures.length }})
+            <i class="fa-solid fa-users"></i> Candidatures reçues ({{ candidatures.length }})
           </button>
         </div>
       </div>

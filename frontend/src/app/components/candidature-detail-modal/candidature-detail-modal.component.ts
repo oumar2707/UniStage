@@ -40,21 +40,21 @@ import { StatusBadgeComponent } from '../status-badge/status-badge.component';
             (click)="activeSection = 'cv'"
             class="modal-tab-btn"
           >
-            <i class="fa-solid fa-file-pdf"></i> Curriculum Vitae (CV)
+            <i class="fa-solid fa-file-pdf"></i> CV
           </button>
           <button
             [class.active]="activeSection === 'lettre'"
             (click)="activeSection = 'lettre'"
             class="modal-tab-btn"
           >
-            <i class="fa-solid fa-envelope-open-text"></i> Lettre de Motivation
+            <i class="fa-solid fa-envelope-open-text"></i> Lettre de motivation
           </button>
           <button
             [class.active]="activeSection === 'profil'"
             (click)="activeSection = 'profil'"
             class="modal-tab-btn"
           >
-            <i class="fa-solid fa-user-gear"></i> Informations Étudiant
+            <i class="fa-solid fa-user-gear"></i> Profil de l'étudiant
           </button>
         </div>
 
@@ -66,7 +66,7 @@ import { StatusBadgeComponent } from '../status-badge/status-badge.component';
             <div class="cv-section">
               <div class="section-actions flex-between mb-3">
                 <div>
-                  <h4 class="section-title"><i class="fa-solid fa-file-lines text-accent"></i> Curriculum Vitae de l'Étudiant</h4>
+                  <h4 class="section-title"><i class="fa-solid fa-file-lines text-accent"></i> CV de l'étudiant</h4>
                   <p class="sub-text">Consultez, téléchargez ou imprimez le CV officiel transmis pour cette candidature</p>
                 </div>
                 <div class="cv-buttons">
@@ -120,7 +120,7 @@ import { StatusBadgeComponent } from '../status-badge/status-badge.component';
                     </div>
 
                     <div class="sheet-col">
-                      <h4><i class="fa-solid fa-graduation-cap"></i> Formation Académique</h4>
+                      <h4><i class="fa-solid fa-graduation-cap"></i> Formation</h4>
                       <div class="timeline-item">
                         <span class="timeline-date">2023 - 2026</span>
                         <strong>Diplôme de Licence en {{ candidature.filiere }}</strong>
@@ -131,7 +131,7 @@ import { StatusBadgeComponent } from '../status-badge/status-badge.component';
                   </div>
 
                   <div class="sheet-full mt-3">
-                    <h4><i class="fa-solid fa-laptop-code"></i> Compétences & Technologies Maîtrisées</h4>
+                    <h4><i class="fa-solid fa-laptop-code"></i> Compétences</h4>
                     <div class="skills-tags">
                       <span class="skill-tag">Java / Spring Boot</span>
                       <span class="skill-tag">Angular / TypeScript</span>
@@ -160,7 +160,7 @@ import { StatusBadgeComponent } from '../status-badge/status-badge.component';
             <div class="lettre-section">
               <div class="section-actions flex-between mb-3">
                 <div>
-                  <h4 class="section-title"><i class="fa-solid fa-pen-fancy text-accent"></i> Lettre de Motivation</h4>
+                  <h4 class="section-title"><i class="fa-solid fa-pen-fancy text-accent"></i> Lettre de motivation</h4>
                   <p class="sub-text">Rédigée et transmise le {{ candidature.dateSoumission | date:'dd/MM/yyyy à HH:mm' }}</p>
                 </div>
               </div>
@@ -184,7 +184,7 @@ import { StatusBadgeComponent } from '../status-badge/status-badge.component';
                 </div>
 
                 <div class="lettre-footer flex-between">
-                  <span class="sign-tag"><i class="fa-solid fa-certificate text-accent"></i> Candidature certifiée par UniStage - Université de Labé</span>
+                  <span class="sign-tag"><i class="fa-solid fa-certificate text-accent"></i> Candidature transmise via UniStage</span>
                   <span class="date-tag">{{ candidature.dateSoumission | date:'dd MMMM yyyy' }}</span>
                 </div>
               </div>
@@ -194,7 +194,7 @@ import { StatusBadgeComponent } from '../status-badge/status-badge.component';
           <!-- TAB 3: INFORMATIONS ÉTUDIANT -->
           @if (activeSection === 'profil') {
             <div class="profil-section">
-              <h4 class="section-title"><i class="fa-solid fa-id-badge text-accent"></i> Profil Détaillé du Candidat</h4>
+              <h4 class="section-title"><i class="fa-solid fa-id-badge text-accent"></i> Profil du candidat</h4>
               
               <div class="info-grid">
                 <div class="info-card">
@@ -265,14 +265,14 @@ import { StatusBadgeComponent } from '../status-badge/status-badge.component';
                 [disabled]="candidature.statut === 'REJETEE'"
                 class="btn btn-danger"
               >
-                <i class="fa-solid fa-xmark"></i> Refuser la Candidature
+                <i class="fa-solid fa-xmark"></i> Refuser
               </button>
               <button
                 (click)="onUpdateStatut('ACCEPTEE')"
                 [disabled]="candidature.statut === 'ACCEPTEE'"
                 class="btn btn-success"
               >
-                <i class="fa-solid fa-check"></i> Accepter la Candidature
+                <i class="fa-solid fa-check"></i> Accepter
               </button>
             </div>
           } @else {

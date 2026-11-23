@@ -12,24 +12,17 @@ import { AuthService } from '../../services/auth.service';
     <div class="auth-page container">
       <div class="auth-card card">
         <div class="auth-header">
-          <div class="logo-circle"><i class="fa-solid fa-lock"></i></div>
-          <h2>Connexion UniStage</h2>
-          <p class="auth-sub">Université de Labé &bull; Espace Sécurisé</p>
+          <div class="logo-circle"><i class="fa-solid fa-graduation-cap"></i></div>
+          <h2>Connexion</h2>
+          <p class="auth-sub">Accédez à votre espace UniStage</p>
         </div>
 
-        <!-- Fast Demo Account Autofill Selector -->
         <div class="demo-accounts-box">
-          <span class="demo-title"><i class="fa-solid fa-bolt"></i> Comptes de Démonstration :</span>
+          <span class="demo-title">Comptes de démonstration</span>
           <div class="demo-pills">
-            <button type="button" (click)="fillDemo('dialoalphoumar021@gmail.com', 'Aoddiallo')" class="demo-pill admin">
-              👑 Admin
-            </button>
-            <button type="button" (click)="fillDemo('Saliou@gmail.com', 'Saliou123')" class="demo-pill student">
-              🎓 Étudiant
-            </button>
-            <button type="button" (click)="fillDemo('contact@koumaacademy.com', 'Kouma2026!')" class="demo-pill company">
-              🏢 Entreprise
-            </button>
+            <button type="button" (click)="fillDemo('etudiant1@demo.local')" class="demo-pill">Étudiant</button>
+            <button type="button" (click)="fillDemo('entreprise1@demo.local')" class="demo-pill">Entreprise</button>
+            <button type="button" (click)="fillDemo('admin@demo.local')" class="demo-pill">Administrateur</button>
           </div>
         </div>
 
@@ -41,7 +34,7 @@ import { AuthService } from '../../services/auth.service';
 
         <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="mt-3">
           <div class="form-group">
-            <label class="form-label" for="email">Adresse Email</label>
+            <label class="form-label" for="email">Adresse e-mail</label>
             <div class="input-with-icon">
               <i class="fa-regular fa-envelope input-icon"></i>
               <input
@@ -49,7 +42,7 @@ import { AuthService } from '../../services/auth.service';
                 type="email"
                 formControlName="email"
                 class="form-control"
-                placeholder="ex: Saliou@gmail.com"
+                placeholder="nom@exemple.com"
               />
             </div>
             @if (loginForm.get('email')?.touched && loginForm.get('email')?.errors?.['required']) {
@@ -61,7 +54,7 @@ import { AuthService } from '../../services/auth.service';
           </div>
 
           <div class="form-group">
-            <label class="form-label" for="motDePasse">Mot de Passe</label>
+            <label class="form-label" for="motDePasse">Mot de passe</label>
             <div class="input-with-icon">
               <i class="fa-solid fa-key input-icon"></i>
               <input
@@ -79,7 +72,7 @@ import { AuthService } from '../../services/auth.service';
 
           <button type="submit" [disabled]="loginForm.invalid || loading" class="btn btn-primary btn-block">
             @if (loading) {
-              <i class="fa-solid fa-spinner fa-spin"></i> Authentification en cours...
+              <i class="fa-solid fa-spinner fa-spin"></i> Connexion...
             } @else {
               <i class="fa-solid fa-right-to-bracket"></i> Se connecter
             }
@@ -87,7 +80,7 @@ import { AuthService } from '../../services/auth.service';
         </form>
 
         <div class="auth-footer">
-          <p>Vous n'avez pas encore de compte ? <a routerLink="/register">Inscrivez-vous ici</a></p>
+          <p>Pas encore de compte ? <a routerLink="/register">Créer un compte</a></p>
         </div>
       </div>
     </div>
@@ -102,11 +95,9 @@ import { AuthService } from '../../services/auth.service';
     }
     .auth-card {
       width: 100%;
-      max-width: 460px;
+      max-width: 420px;
       padding: 2.5rem;
-      box-shadow: var(--shadow-lg);
-      border-radius: var(--radius-md);
-      border: 1px solid #cbd5e1;
+      box-shadow: var(--shadow-md);
     }
     .auth-header {
       text-align: center;
@@ -115,15 +106,14 @@ import { AuthService } from '../../services/auth.service';
     .logo-circle {
       width: 54px;
       height: 54px;
-      background: linear-gradient(135deg, #0b132b, #2563eb);
-      color: #ffffff;
+      background: var(--accent-soft);
+      color: var(--accent);
       border-radius: 14px;
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 1.4rem;
       margin: 0 auto 0.85rem;
-      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3);
     }
     .auth-sub {
       font-size: 0.85rem;
@@ -133,41 +123,37 @@ import { AuthService } from '../../services/auth.service';
 
     /* Demo Accounts Selector */
     .demo-accounts-box {
-      background: #f8fafc;
-      border: 1px dashed #cbd5e1;
+      background: var(--bg-main);
       padding: 0.85rem;
       border-radius: var(--radius-sm);
       text-align: center;
     }
     .demo-title {
-      font-size: 0.775rem;
-      font-weight: 700;
+      font-size: 0.8rem;
+      font-weight: 600;
       color: var(--text-muted);
       display: block;
       margin-bottom: 0.5rem;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
     }
     .demo-pills {
       display: flex;
       justify-content: center;
+      flex-wrap: wrap;
       gap: 0.4rem;
     }
     .demo-pill {
-      font-size: 0.75rem;
-      font-weight: 700;
-      padding: 0.3rem 0.65rem;
+      font: inherit;
+      font-size: 0.8rem;
+      font-weight: 500;
+      padding: 0.3rem 0.75rem;
       border-radius: 20px;
-      border: none;
+      border: 1px solid var(--border-color);
+      background: #ffffff;
+      color: var(--text-main);
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: var(--transition);
     }
-    .demo-pill.admin { background: #fee2e2; color: #991b1b; }
-    .demo-pill.admin:hover { background: #fca5a5; }
-    .demo-pill.student { background: #dbeafe; color: #1e40af; }
-    .demo-pill.student:hover { background: #bfdbfe; }
-    .demo-pill.company { background: #fef3c7; color: #92400e; }
-    .demo-pill.company:hover { background: #fde68a; }
+    .demo-pill:hover { border-color: var(--accent); color: var(--accent); }
 
     .input-with-icon {
       position: relative;
@@ -210,11 +196,9 @@ export class LoginComponent {
   loading = false;
   errorMessage: string | null = null;
 
-  fillDemo(email: string, pass: string) {
-    this.loginForm.patchValue({
-      email: email,
-      motDePasse: pass
-    });
+  fillDemo(email: string) {
+    this.loginForm.patchValue({ email, motDePasse: '' });
+    document.getElementById('motDePasse')?.focus();
   }
 
   onSubmit() {

@@ -12,7 +12,7 @@ import { OffreService } from '../../services/offre.service';
     <div class="container form-page">
       <div class="form-card card">
         <div class="form-header">
-          <h2>Publier une Offre de Stage</h2>
+          <h2>Publier une offre de stage</h2>
           <p class="sub-text">Remplissez les détails du stage pour les étudiants de l'Université de Labé</p>
         </div>
 
@@ -24,7 +24,7 @@ import { OffreService } from '../../services/offre.service';
 
         <form [formGroup]="offreForm" (ngSubmit)="onSubmit()">
           <div class="form-group">
-            <label class="form-label" for="titre">Titre du Stage *</label>
+            <label class="form-label" for="titre">Intitulé du stage *</label>
             <input id="titre" formControlName="titre" class="form-control" placeholder="ex: Développeur Full-Stack Java / Angular" />
             @if (offreForm.get('titre')?.touched && offreForm.get('titre')?.errors?.['required']) {
               <p class="form-error">Le titre de l'offre est obligatoire.</p>
@@ -32,7 +32,7 @@ import { OffreService } from '../../services/offre.service';
           </div>
 
           <div class="form-group">
-            <label class="form-label" for="description">Description Détaillée du Poste *</label>
+            <label class="form-label" for="description">Description du poste *</label>
             <textarea id="description" formControlName="description" rows="5" class="form-control" placeholder="Missions du stagiaire, projet, environnement de travail..."></textarea>
             @if (offreForm.get('description')?.touched && offreForm.get('description')?.errors?.['required']) {
               <p class="form-error">La description est obligatoire.</p>
@@ -40,7 +40,7 @@ import { OffreService } from '../../services/offre.service';
           </div>
 
           <div class="form-group">
-            <label class="form-label" for="competences">Compétences Requises (séparées par des virgules) *</label>
+            <label class="form-label" for="competences">Compétences requises (séparées par des virgules) *</label>
             <input id="competences" formControlName="competencesRequises" class="form-control" placeholder="ex: Java, Spring Boot, Angular, Git, REST API" />
             @if (offreForm.get('competencesRequises')?.touched && offreForm.get('competencesRequises')?.errors?.['required']) {
               <p class="form-error">Les compétences requises sont obligatoires.</p>
@@ -49,19 +49,19 @@ import { OffreService } from '../../services/offre.service';
 
           <div class="grid-2">
             <div class="form-group">
-              <label class="form-label" for="dateDebut">Date de Début Prévisionnelle</label>
+              <label class="form-label" for="dateDebut">Date de début</label>
               <input id="dateDebut" type="date" formControlName="dateDebut" class="form-control" />
             </div>
 
             <div class="form-group">
-              <label class="form-label" for="dateFin">Date de Fin Prévisionnelle</label>
+              <label class="form-label" for="dateFin">Date de fin</label>
               <input id="dateFin" type="date" formControlName="dateFin" class="form-control" />
             </div>
           </div>
 
           <div class="grid-2">
             <div class="form-group">
-              <label class="form-label" for="lieu">Lieu / Ville *</label>
+              <label class="form-label" for="lieu">Lieu *</label>
               <input id="lieu" formControlName="lieu" class="form-control" placeholder="ex: Labé (ou En distanciel)" />
               @if (offreForm.get('lieu')?.touched && offreForm.get('lieu')?.errors?.['required']) {
                 <p class="form-error">Le lieu du stage est obligatoire.</p>
@@ -69,7 +69,7 @@ import { OffreService } from '../../services/offre.service';
             </div>
 
             <div class="form-group">
-              <label class="form-label" for="statut">Statut de l'Offre</label>
+              <label class="form-label" for="statut">Statut de l'offre</label>
               <select id="statut" formControlName="statut" class="form-control">
                 <option value="OUVERTE">OUVERTE</option>
                 <option value="FERMEE">FERMEE</option>
@@ -83,7 +83,7 @@ import { OffreService } from '../../services/offre.service';
               @if (loading) {
                 <i class="fa-solid fa-spinner fa-spin"></i> Publication...
               } @else {
-                <i class="fa-solid fa-check"></i> Publier l'Offre de Stage
+                <i class="fa-solid fa-check"></i> Publier l'offre
               }
             </button>
           </div>

@@ -19,14 +19,14 @@ import { Component } from '@angular/core';
         <div class="footer-links">
           <h4 class="footer-heading">Université de Labé</h4>
           <ul>
-            <li><a href="https://www.univ-labe.edu.gn" target="_blank" rel="noopener"><i class="fa-solid fa-globe"></i> Site Web Officiel (univ-labe.edu.gn)</a></li>
-            <li><a href="https://www.univ-labe.edu.gn" target="_blank" rel="noopener"><i class="fa-solid fa-building-columns"></i> Campus Universitaire de Hafia</a></li>
+            <li><a href="https://www.univ-labe.edu.gn" target="_blank" rel="noopener"><i class="fa-solid fa-globe"></i> Site de l'université</a></li>
+            <li><a href="https://www.univ-labe.edu.gn" target="_blank" rel="noopener"><i class="fa-solid fa-building-columns"></i> Campus de Hafia</a></li>
             <li><a href="https://www.univ-labe.edu.gn" target="_blank" rel="noopener"><i class="fa-solid fa-microchip"></i> Département d'Informatique (FST)</a></li>
           </ul>
         </div>
 
         <div class="footer-contact">
-          <h4 class="footer-heading">Contact Officiel</h4>
+          <h4 class="footer-heading">Contact</h4>
           <p><i class="fa-solid fa-location-dot contact-icon"></i> Hafia, Préfecture de Labé, BP 210, Guinée</p>
           <p><i class="fa-solid fa-envelope contact-icon"></i> contact&#64;univ-labe.edu.gn</p>
           <p><i class="fa-solid fa-phone contact-icon"></i> (+224) 629 00 58 07</p>

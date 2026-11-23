@@ -15,7 +15,7 @@ import { CandidatureDetailModalComponent } from '../../components/candidature-de
       <div class="page-header">
         <div>
           <span class="page-tag"><i class="fa-solid fa-graduation-cap"></i> Université de Labé</span>
-          <h1>Espace Étudiant Finissant</h1>
+          <h1>Mes candidatures</h1>
           <p class="sub-text">Suivi du traitement de vos candidatures déposées</p>
         </div>
       </div>
@@ -39,7 +39,7 @@ import { CandidatureDetailModalComponent } from '../../components/candidature-de
                 </div>
 
                 <div class="lettre-box">
-                  <h4><i class="fa-solid fa-file-lines text-accent"></i> Lettre de Motivation transmise:</h4>
+                  <h4><i class="fa-solid fa-file-lines text-accent"></i> Lettre de motivation</h4>
                   <p>{{ item.lettreMotivation }}</p>
                 </div>
 

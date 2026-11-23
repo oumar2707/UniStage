@@ -25,19 +25,19 @@ import { AuthService } from '../../services/auth.service';
 
         <nav class="nav-links" [class.mobile-open]="menuOpen()">
           <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" (click)="closeMobileMenu()">
-            <i class="fa-solid fa-house"></i> Offres de Stage
+            <i class="fa-solid fa-house"></i> Offres de stage
           </a>
 
           @if (authService.currentUser(); as user) {
             @switch (user.role) {
               @case ('ETUDIANT') {
                 <a routerLink="/etudiant" routerLinkActive="active" (click)="closeMobileMenu()">
-                  <i class="fa-solid fa-graduation-cap"></i> Espace Étudiant
+                  <i class="fa-solid fa-graduation-cap"></i> Mon espace
                 </a>
               }
               @case ('ENTREPRISE') {
                 <a routerLink="/entreprise" routerLinkActive="active" (click)="closeMobileMenu()">
-                  <i class="fa-solid fa-building"></i> Espace Entreprise
+                  <i class="fa-solid fa-building"></i> Mon espace
                 </a>
               }
               @case ('ADMIN') {
@@ -94,15 +94,14 @@ import { AuthService } from '../../services/auth.service';
     .logo-icon {
       width: 44px;
       height: 44px;
-      background: linear-gradient(135deg, #0b132b 0%, #2563eb 100%);
-      color: #38bdf8;
-      border-radius: 12px;
+      background: var(--accent);
+      color: #ffffff;
+      border-radius: 10px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.35rem;
+      font-size: 1.25rem;
       flex-shrink: 0;
-      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
     }
     .brand-text {
       display: flex;
@@ -110,9 +109,8 @@ import { AuthService } from '../../services/auth.service';
     }
     .brand-title {
       font-family: 'Outfit', sans-serif;
-      font-size: 1.35rem;
-      font-weight: 800;
-      letter-spacing: -0.5px;
+      font-size: 1.3rem;
+      font-weight: 700;
       color: var(--primary);
       line-height: 1.1;
     }
@@ -154,7 +152,14 @@ import { AuthService } from '../../services/auth.service';
     }
     .nav-links a.active, .nav-links a:hover {
       color: var(--accent);
-      background: #eff6ff;
+      background: var(--accent-soft);
+    }
+    .nav-links a.btn-primary, .nav-links a.btn-primary:hover {
+      color: #ffffff;
+      background: var(--accent);
+    }
+    .nav-links a.btn-primary:hover {
+      background: var(--accent-dark);
     }
     .user-profile-menu {
       display: flex;

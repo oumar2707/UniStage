@@ -7,7 +7,7 @@ Plateforme web de gestion des offres de stage de l'**Université de Labé** (Gui
 ![Angular](https://img.shields.io/badge/Angular-18-DD0031)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-4169E1)
 
-**Démo :** _lien à venir_
+**Démo :** [unistage.vercel.app](https://unistage.vercel.app)
 
 > L'API est hébergée sur une offre gratuite qui se met en veille quand elle n'est pas utilisée. Au premier chargement, comptez environ une minute avant que les offres s'affichent.
 

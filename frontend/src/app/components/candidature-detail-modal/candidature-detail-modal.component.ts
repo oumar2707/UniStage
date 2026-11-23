@@ -172,7 +172,7 @@ import { StatusBadgeComponent } from '../status-badge/status-badge.component';
                     <span>Matricule: {{ candidature.matricule }} ({{ candidature.filiere }})</span>
                   </div>
                   <div class="recipient-info">
-                    <strong>À l'attention de : {{ candidature.raisonSocialeEntreprise || 'L\'Entreprise Recruteuse' }}</strong><br />
+                    <strong>À l'attention de : {{ candidature.raisonSocialeEntreprise || "l'entreprise" }}</strong><br />
                     <span>Objet : Candidature pour l'offre « {{ candidature.offreTitre }} »</span>
                   </div>
                 </div>

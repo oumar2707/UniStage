@@ -93,6 +93,24 @@ import { CandidatureModalComponent } from '../../components/candidature-modal/ca
       </div>
     </section>
 
+    <section class="partners">
+      <div class="container partners-inner">
+        <p class="partners-title">Ils nous font confiance</p>
+        <div class="partners-logos">
+          @for (p of partenaires; track p.nom; let i = $index) {
+            <a class="partner lift" [href]="p.url" target="_blank" rel="noopener"
+               [attr.aria-label]="p.nom + ' (nouvel onglet)'" appReveal [revealDelay]="i * 100">
+              <img [src]="p.logo" [alt]="'Logo ' + p.nom" loading="lazy" />
+              <span class="partner-text">
+                <strong>{{ p.nom }}</strong>
+                <small>{{ p.domaine }}</small>
+              </span>
+            </a>
+          }
+        </div>
+      </div>
+    </section>
+
     <!-- Main Content: Offers List -->
     <main class="main-container container">
       @if (alertMessage) {
@@ -476,6 +494,11 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   // Slideshow state
   slides: string[] = ['/images/campus.jpg', '/images/etudiants.jpg', '/images/entreprise.jpg'];
+
+  readonly partenaires = [
+    { nom: 'Orange Guinée', domaine: 'Télécommunications', url: 'https://www.orange-guinee.com/', logo: '/images/logos/orange-guinee.jpg' },
+    { nom: 'Kouma Academy', domaine: 'Formation & numérique', url: 'https://koumaacademy.com/', logo: '/images/logos/kouma-academy.jpg' }
+  ];
 
   get isLoggedIn(): boolean {
     return this.authService.isLoggedIn();

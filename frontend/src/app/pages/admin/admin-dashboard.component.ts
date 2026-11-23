@@ -15,7 +15,7 @@ import { StatusBadgeComponent } from '../../components/status-badge/status-badge
   template: `
     <div class="dashboard-page container">
       <app-page-banner
-        image="/images/etudiants.jpg"
+        image="/images/campus.jpg"
         eyebrow="Administration"
         title="Tableau de bord"
         subtitle="Suivi des comptes, des offres et des candidatures de la plateforme.">

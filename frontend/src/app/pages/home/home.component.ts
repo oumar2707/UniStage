@@ -175,7 +175,27 @@ import { CandidatureModalComponent } from '../../components/candidature-modal/ca
       <div class="container">
         <div class="feature">
           <div class="feature-media" appReveal>
-            <img src="/images/etudiants.jpg" alt="Étudiants travaillant ensemble sur des ordinateurs" loading="lazy" width="1024" height="1024" />
+            <img src="/images/campus.jpg" alt="Vue aérienne du campus de l'Université de Labé" loading="lazy" width="720" height="405" />
+            <div class="feature-badge"><i class="fa-solid fa-location-dot"></i> Campus de Hafia, Labé</div>
+          </div>
+          <div class="feature-text" appReveal [revealDelay]="120">
+            <span class="eyebrow">L'université</span>
+            <h2>Une plateforme de l'Université de Labé</h2>
+            <p>UniStage accompagne les étudiants de la Faculté des Sciences et Techniques dans leur recherche de stage et rapproche l'université des entreprises de la région.</p>
+            <ul class="check-list">
+              <li><i class="fa-solid fa-circle-check"></i> Entreprises validées par l'administration avant toute publication</li>
+              <li><i class="fa-solid fa-circle-check"></i> Suivi des stages centralisé pour la faculté</li>
+              <li><i class="fa-solid fa-circle-check"></i> Accessible depuis un ordinateur ou un téléphone</li>
+            </ul>
+            <a href="https://www.univ-labe.edu.gn" target="_blank" rel="noopener" class="btn btn-secondary">
+              Site de l'université <i class="fa-solid fa-arrow-up-right-from-square"></i>
+            </a>
+          </div>
+        </div>
+
+        <div class="feature feature-reverse">
+          <div class="feature-media" appReveal>
+            <img src="/images/amphi.jpg" alt="Étudiants dans un amphithéâtre" loading="lazy" width="640" height="427" />
             <div class="feature-badge"><i class="fa-solid fa-check"></i> Candidature envoyée</div>
           </div>
           <div class="feature-text" appReveal [revealDelay]="120">
@@ -193,7 +213,7 @@ import { CandidatureModalComponent } from '../../components/candidature-modal/ca
           </div>
         </div>
 
-        <div class="feature feature-reverse">
+        <div class="feature">
           <div class="feature-media" appReveal>
             <img src="/images/entreprise.jpg" alt="Équipe en entreprise devant des postes de travail" loading="lazy" width="1024" height="1024" />
             <div class="feature-badge"><i class="fa-solid fa-user-check"></i> Nouveau candidat</div>
@@ -455,7 +475,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   alertClass = 'alert alert-success';
 
   // Slideshow state
-  slides: string[] = ['/images/etudiants.jpg', '/images/entreprise.jpg'];
+  slides: string[] = ['/images/campus.jpg', '/images/etudiants.jpg', '/images/entreprise.jpg'];
 
   get isLoggedIn(): boolean {
     return this.authService.isLoggedIn();

@@ -11,7 +11,7 @@ import { AuthService } from '../../services/auth.service';
   template: `
     <div class="auth-split">
       <aside class="auth-visual">
-        <img src="/images/etudiants.jpg" alt="" />
+        <img src="/images/etudiant-portrait.jpg" alt="" />
         <div class="auth-quote anim-fade-up" style="animation-delay: 200ms">
           <h2>Votre stage commence ici.</h2>
           <p>Retrouvez les offres des entreprises partenaires et suivez vos candidatures depuis votre espace.</p>

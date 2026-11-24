@@ -1,5 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { CvLabelPipe } from '../../pipes/cv-label.pipe';
 import { RouterLink } from '@angular/router';
 import { PageBannerComponent } from '../../components/page-banner/page-banner.component';
 import { RevealDirective } from '../../directives/reveal.directive';
@@ -12,7 +13,7 @@ import { CandidatureDetailModalComponent } from '../../components/candidature-de
 @Component({
   selector: 'app-etudiant-dashboard',
   standalone: true,
-  imports: [CommonModule, RouterLink, StatusBadgeComponent, CandidatureDetailModalComponent, PageBannerComponent, RevealDirective],
+  imports: [CommonModule, RouterLink, StatusBadgeComponent, CandidatureDetailModalComponent, PageBannerComponent, RevealDirective, CvLabelPipe],
   template: `
     <div class="dashboard-page container">
       <app-page-banner
@@ -49,7 +50,7 @@ import { CandidatureDetailModalComponent } from '../../components/candidature-de
 
                 <div class="card-footer flex-between mt-3">
                   <span class="cv-status text-success">
-                    <i class="fa-solid fa-paperclip"></i> CV transmis : {{ item.cv || 'cv_mamadou_saliou_barry.pdf' }}
+                    <i class="fa-solid fa-paperclip"></i> CV : {{ item.cv | cvLabel }}
                   </span>
                   <button (click)="selectedCandidatureForView = item" class="btn btn-secondary btn-sm">
                     <i class="fa-solid fa-eye"></i> Visualiser mon dossier (CV & Lettre)
@@ -140,6 +141,8 @@ import { CandidatureDetailModalComponent } from '../../components/candidature-de
       border-top: 1px solid var(--border-color);
     }
     .cv-status {
+      min-width: 0;
+      overflow-wrap: anywhere;
       font-size: 0.85rem;
       font-weight: 600;
     }

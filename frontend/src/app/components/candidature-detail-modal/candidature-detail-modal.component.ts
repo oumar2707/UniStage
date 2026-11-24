@@ -1,5 +1,6 @@
 import { Component, Input, Output, EventEmitter, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { CvLabelPipe } from '../../pipes/cv-label.pipe';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Candidature } from '../../models/candidature.model';
 import { StatusBadgeComponent } from '../status-badge/status-badge.component';
@@ -7,7 +8,7 @@ import { StatusBadgeComponent } from '../status-badge/status-badge.component';
 @Component({
   selector: 'app-candidature-detail-modal',
   standalone: true,
-  imports: [CommonModule, StatusBadgeComponent],
+  imports: [CommonModule, StatusBadgeComponent, CvLabelPipe],
   template: `
     <div class="modal-backdrop" (click)="onClose()">
       <div class="modal-dialog card" (click)="$event.stopPropagation()">
@@ -147,7 +148,7 @@ import { StatusBadgeComponent } from '../status-badge/status-badge.component';
                     <h4><i class="fa-solid fa-paperclip"></i> Fichier associé</h4>
                     <p class="file-ref-box">
                       <i class="fa-solid fa-file-pdf text-danger"></i>
-                      <span>{{ candidature.cv || 'cv_' + candidature.etudiantNom?.toLowerCase() + '.pdf' }}</span>
+                      <span>{{ candidature.cv | cvLabel }}</span>
                     </p>
                   </div>
                 </div>
